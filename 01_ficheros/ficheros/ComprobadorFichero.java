@@ -1,4 +1,4 @@
-package ficheros;
+package ficheros;   
 
 import java.io.File;
 import java.util.Scanner;
