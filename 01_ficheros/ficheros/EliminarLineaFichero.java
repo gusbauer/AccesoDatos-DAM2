@@ -12,7 +12,7 @@ public class EliminarLineaFichero {
         System.out.print("Introduce la ruta del fichero: ");
         String ruta = scanner.nextLine();
 
-        File original = new File(ruta);
+        java.io.File original = new java.io.File(ruta);   // <-- nombre calificado
 
         if (!original.exists() || !original.isFile()) {
             System.out.println("El fichero no existe.");
@@ -29,8 +29,8 @@ public class EliminarLineaFichero {
             return;
         }
 
-        File temporal =
-                new File(original.getParent(),
+        java.io.File temporal =                            // <-- nombre calificado
+                new java.io.File(original.getParent(),
                         "temporal_" + original.getName());
 
         int numeroLinea = 1;
@@ -39,71 +39,42 @@ public class EliminarLineaFichero {
         try (
                 BufferedReader br =
                         new BufferedReader(new FileReader(original));
-
                 BufferedWriter bw =
                         new BufferedWriter(new FileWriter(temporal))
         ) {
-
             String linea;
 
             while ((linea = br.readLine()) != null) {
-
                 if (numeroLinea != lineaEliminar) {
-
                     bw.write(linea);
                     bw.newLine();
-
                 } else {
-
                     encontrada = true;
                 }
-
                 numeroLinea++;
             }
 
         } catch (IOException e) {
-
-            System.out.println(
-                    "Error procesando el fichero: " + e.getMessage()
-            );
-
+            System.out.println("Error procesando el fichero: " + e.getMessage());
             scanner.close();
             return;
         }
 
         if (!encontrada) {
-
-            System.out.println(
-                    "El fichero no tiene la línea "
-                    + lineaEliminar + "."
-            );
-
+            System.out.println("El fichero no tiene la línea " + lineaEliminar + ".");
             temporal.delete();
             scanner.close();
             return;
         }
 
         if (original.delete()) {
-
             if (temporal.renameTo(original)) {
-
-                System.out.println(
-                        "Línea " + lineaEliminar
-                        + " eliminada correctamente."
-                );
-
+                System.out.println("Línea " + lineaEliminar + " eliminada correctamente.");
             } else {
-
-                System.out.println(
-                        "No se pudo renombrar el fichero temporal."
-                );
+                System.out.println("No se pudo renombrar el fichero temporal.");
             }
-
         } else {
-
-            System.out.println(
-                    "No se pudo eliminar el fichero original."
-            );
+            System.out.println("No se pudo eliminar el fichero original.");
         }
 
         scanner.close();
