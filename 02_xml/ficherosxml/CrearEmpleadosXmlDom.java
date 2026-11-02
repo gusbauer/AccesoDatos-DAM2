@@ -1,3 +1,5 @@
+
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -14,7 +16,6 @@ import java.io.RandomAccessFile;
 public class CrearEmpleadosXmlDom {
 
     // Tamaño de cada registro en bytes (173 bytes)
-    @SuppressWarnings("unused")
     private static final int TAMANIO_REGISTRO = 173;
 
     public static void main(String[] args) {
