@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE empleados SYSTEM "empleados.dtd">
+<empleados>
+    <empleado codigo="1" tipo="Tecnico">
+        <nombre>David Lopez 1</nombre>
+        <correo>empleado1@empresa.com</correo>
+        <salario>2140.5305</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>40</departamento>
+    </empleado>
+    <empleado codigo="2" tipo="Staff">
+        <nombre>Javier Torres 2</nombre>
+        <correo>empleado2@empresa.com</correo>
+        <salario>1940.6393</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="3" tipo="Comercial">
+        <nombre>Javier Perez 3</nombre>
+        <correo>empleado3@empresa.com</correo>
+        <salario>2236.921</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="4" tipo="Staff">
+        <nombre>Gema Torres 4</nombre>
+        <correo>empleado4@empresa.com</correo>
+        <salario>2426.3289</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="5" tipo="Tecnico">
+        <nombre>Elena Lopez 5</nombre>
+        <correo>empleado5@empresa.com</correo>
+        <salario>3000.7183</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>40</departamento>
+    </empleado>
+    <empleado codigo="6" tipo="Tecnico">
+        <nombre>Ana Garcia 6</nombre>
+        <correo>empleado6@empresa.com</correo>
+        <salario>1859.6008</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="7" tipo="Staff">
+        <nombre>David Ruiz 7</nombre>
+        <correo>empleado7@empresa.com</correo>
+        <salario>3387.9282</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="8" tipo="Staff">
+        <nombre>Hugo Lopez 8</nombre>
+        <correo>empleado8@empresa.com</correo>
+        <salario>2940.2354</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>40</departamento>
+    </empleado>
+    <empleado codigo="9" tipo="Staff">
+        <nombre>Hugo Lopez 9</nombre>
+        <correo>empleado9@empresa.com</correo>
+        <salario>2339.4</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="10" tipo="Staff">
+        <nombre>Ana Fernandez 10</nombre>
+        <correo>empleado10@empresa.com</correo>
+        <salario>3429.3826</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>40</departamento>
+    </empleado>
+    <empleado codigo="11" tipo="Staff">
+        <nombre>Elena Lopez 11</nombre>
+        <correo>empleado11@empresa.com</correo>
+        <salario>3963.3452</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="12" tipo="Comercial">
+        <nombre>Carlos Ruiz 12</nombre>
+        <correo>empleado12@empresa.com</correo>
+        <salario>2501.3477</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="13" tipo="Tecnico">
+        <nombre>Beatriz Gomez 13</nombre>
+        <correo>empleado13@empresa.com</correo>
+        <salario>3289.875</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>20</departamento>
+    </empleado>
+    <empleado codigo="14" tipo="Comercial">
+        <nombre>Gema Lopez 14</nombre>
+        <correo>empleado14@empresa.com</correo>
+        <salario>3581.1423</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="15" tipo="Tecnico">
+        <nombre>David Perez 15</nombre>
+        <correo>empleado15@empresa.com</correo>
+        <salario>2102.2776</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="16" tipo="Comercial">
+        <nombre>Ana Perez 16</nombre>
+        <correo>empleado16@empresa.com</correo>
+        <salario>3461.6538</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="17" tipo="Tecnico">
+        <nombre>David Diaz 17</nombre>
+        <correo>empleado17@empresa.com</correo>
+        <salario>1999.6761</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>20</departamento>
+    </empleado>
+    <empleado codigo="18" tipo="Staff">
+        <nombre>Gema Fernandez 18</nombre>
+        <correo>empleado18@empresa.com</correo>
+        <salario>2636.2126</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="19" tipo="Staff">
+        <nombre>Elena Fernandez 19</nombre>
+        <correo>empleado19@empresa.com</correo>
+        <salario>2512.4695</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="20" tipo="Tecnico">
+        <nombre>Javier Sanchez 20</nombre>
+        <correo>empleado20@empresa.com</correo>
+        <salario>2994.0476</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>20</departamento>
+    </empleado>
+    <empleado codigo="21" tipo="Staff">
+        <nombre>David Torres 21</nombre>
+        <correo>empleado21@empresa.com</correo>
+        <salario>2457.619</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="22" tipo="Comercial">
+        <nombre>Javier Martin 22</nombre>
+        <correo>empleado22@empresa.com</correo>
+        <salario>2032.7095</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="23" tipo="Comercial">
+        <nombre>Carlos Fernandez 23</nombre>
+        <correo>empleado23@empresa.com</correo>
+        <salario>2709.814</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="24" tipo="Comercial">
+        <nombre>Beatriz Ruiz 24</nombre>
+        <correo>empleado24@empresa.com</correo>
+        <salario>3072.8352</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="25" tipo="Comercial">
+        <nombre>Ana Diaz 25</nombre>
+        <correo>empleado25@empresa.com</correo>
+        <salario>1968.2478</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="26" tipo="Staff">
+        <nombre>Beatriz Perez 26</nombre>
+        <correo>empleado26@empresa.com</correo>
+        <salario>2076.0432</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>20</departamento>
+    </empleado>
+    <empleado codigo="27" tipo="Staff">
+        <nombre>Gema Garcia 27</nombre>
+        <correo>empleado27@empresa.com</correo>
+        <salario>2200.9038</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>20</departamento>
+    </empleado>
+    <empleado codigo="28" tipo="Comercial">
+        <nombre>Gema Torres 28</nombre>
+        <correo>empleado28@empresa.com</correo>
+        <salario>3080.4878</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="29" tipo="Comercial">
+        <nombre>Elena Martin 29</nombre>
+        <correo>empleado29@empresa.com</correo>
+        <salario>3149.7588</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>20</departamento>
+    </empleado>
+    <empleado codigo="30" tipo="Staff">
+        <nombre>Gema Sanchez 30</nombre>
+        <correo>empleado30@empresa.com</correo>
+        <salario>2174.4976</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>40</departamento>
+    </empleado>
+    <empleado codigo="31" tipo="Comercial">
+        <nombre>Hugo Garcia 31</nombre>
+        <correo>empleado31@empresa.com</correo>
+        <salario>2224.2085</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="32" tipo="Tecnico">
+        <nombre>Beatriz Martin 32</nombre>
+        <correo>empleado32@empresa.com</correo>
+        <salario>2825.3015</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="33" tipo="Tecnico">
+        <nombre>David Perez 33</nombre>
+        <correo>empleado33@empresa.com</correo>
+        <salario>2806.5806</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>20</departamento>
+    </empleado>
+    <empleado codigo="34" tipo="Tecnico">
+        <nombre>David Fernandez 34</nombre>
+        <correo>empleado34@empresa.com</correo>
+        <salario>2195.3582</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>20</departamento>
+    </empleado>
+    <empleado codigo="35" tipo="Staff">
+        <nombre>Isabel Ruiz 35</nombre>
+        <correo>empleado35@empresa.com</correo>
+        <salario>2945.251</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>40</departamento>
+    </empleado>
+    <empleado codigo="36" tipo="Staff">
+        <nombre>Fernando Torres 36</nombre>
+        <correo>empleado36@empresa.com</correo>
+        <salario>3796.112</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="37" tipo="Staff">
+        <nombre>Fernando Torres 37</nombre>
+        <correo>empleado37@empresa.com</correo>
+        <salario>2737.2703</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="38" tipo="Tecnico">
+        <nombre>Ana Ruiz 38</nombre>
+        <correo>empleado38@empresa.com</correo>
+        <salario>3110.7676</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="39" tipo="Staff">
+        <nombre>Hugo Martin 39</nombre>
+        <correo>empleado39@empresa.com</correo>
+        <salario>3265.309</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="40" tipo="Staff">
+        <nombre>Beatriz Ruiz 40</nombre>
+        <correo>empleado40@empresa.com</correo>
+        <salario>3631.1084</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>20</departamento>
+    </empleado>
+    <empleado codigo="41" tipo="Comercial">
+        <nombre>Beatriz Martin 41</nombre>
+        <correo>empleado41@empresa.com</correo>
+        <salario>2482.222</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>30</departamento>
+    </empleado>
+    <empleado codigo="42" tipo="Comercial">
+        <nombre>Gema Lopez 42</nombre>
+        <correo>empleado42@empresa.com</correo>
+        <salario>2995.5442</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="43" tipo="Comercial">
+        <nombre>David Ruiz 43</nombre>
+        <correo>empleado43@empresa.com</correo>
+        <salario>3151.7117</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="44" tipo="Comercial">
+        <nombre>David Perez 44</nombre>
+        <correo>empleado44@empresa.com</correo>
+        <salario>3038.026</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="45" tipo="Comercial">
+        <nombre>Carlos Gomez 45</nombre>
+        <correo>empleado45@empresa.com</correo>
+        <salario>1693.9126</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="46" tipo="Staff">
+        <nombre>Fernando Diaz 46</nombre>
+        <correo>empleado46@empresa.com</correo>
+        <salario>3191.6494</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>50</departamento>
+    </empleado>
+    <empleado codigo="47" tipo="Tecnico">
+        <nombre>Isabel Torres 47</nombre>
+        <correo>empleado47@empresa.com</correo>
+        <salario>2130.7046</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="48" tipo="Tecnico">
+        <nombre>Ana Ruiz 48</nombre>
+        <correo>empleado48@empresa.com</correo>
+        <salario>3272.646</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>40</departamento>
+    </empleado>
+    <empleado codigo="49" tipo="Staff">
+        <nombre>Carlos Ruiz 49</nombre>
+        <correo>empleado49@empresa.com</correo>
+        <salario>2725.0098</salario>
+        <carnetConducir>N</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+    <empleado codigo="50" tipo="Tecnico">
+        <nombre>Carlos Garcia 50</nombre>
+        <correo>empleado50@empresa.com</correo>
+        <salario>1565.8003</salario>
+        <carnetConducir>S</carnetConducir>
+        <departamento>10</departamento>
+    </empleado>
+</empleados>
