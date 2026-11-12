@@ -1,0 +1,8 @@
+Esta es la prueba de la practica numero 1
+de base de Acceso a Datos del ciclo:
+
+DESARROLLO DE APLICACIONES MULTIPLATAFORMA.
+
+Hoy estamos probando el encriptador.
+
+Antonio Marin.
