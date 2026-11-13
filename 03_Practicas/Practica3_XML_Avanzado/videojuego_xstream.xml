@@ -1,0 +1,13 @@
+<videojuego>
+  <codigo>1001</codigo>
+  <titulo>The Last of Us</titulo>
+  <plataforma>PS5</plataforma>
+  <anio>2022</anio>
+  <precio>49.99</precio>
+  <multijugador>false</multijugador>
+  <valoracion>9.6</valoracion>
+  <codigoDesarrolladora>4</codigoDesarrolladora>
+  <genero>Aventura</genero>
+  <pegi>18</pegi>
+  <ventas>20000000</ventas>
+</videojuego>

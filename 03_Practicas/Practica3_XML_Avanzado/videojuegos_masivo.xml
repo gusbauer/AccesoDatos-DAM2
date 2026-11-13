@@ -1,0 +1,1133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<desarrolladoras>
+    <desarrolladora codigo="1" nombre="Mojang">
+        <pais>Suecia</pais>
+        <videojuegos>
+            <videojuego codigo="1">
+                <titulo>Videojuego 1</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2016</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.1</valoracion>
+                <genero>RPG</genero>
+                <pegi>7</pegi>
+                <ventas>100000</ventas>
+            </videojuego>
+            <videojuego codigo="2">
+                <titulo>Videojuego 2</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2017</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.2</valoracion>
+                <genero>Accion</genero>
+                <pegi>12</pegi>
+                <ventas>200000</ventas>
+            </videojuego>
+            <videojuego codigo="3">
+                <titulo>Videojuego 3</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2018</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.3</valoracion>
+                <genero>Aventura</genero>
+                <pegi>16</pegi>
+                <ventas>300000</ventas>
+            </videojuego>
+            <videojuego codigo="4">
+                <titulo>Videojuego 4</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2019</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.4</valoracion>
+                <genero>Shooter</genero>
+                <pegi>18</pegi>
+                <ventas>400000</ventas>
+            </videojuego>
+            <videojuego codigo="5">
+                <titulo>Videojuego 5</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2020</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.5</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>7</pegi>
+                <ventas>500000</ventas>
+            </videojuego>
+            <videojuego codigo="6">
+                <titulo>Videojuego 6</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2021</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.6</valoracion>
+                <genero>Carreras</genero>
+                <pegi>12</pegi>
+                <ventas>600000</ventas>
+            </videojuego>
+            <videojuego codigo="7">
+                <titulo>Videojuego 7</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2022</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.7</valoracion>
+                <genero>RPG</genero>
+                <pegi>16</pegi>
+                <ventas>700000</ventas>
+            </videojuego>
+            <videojuego codigo="8">
+                <titulo>Videojuego 8</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2023</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.8</valoracion>
+                <genero>Accion</genero>
+                <pegi>18</pegi>
+                <ventas>800000</ventas>
+            </videojuego>
+            <videojuego codigo="9">
+                <titulo>Videojuego 9</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2024</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.9</valoracion>
+                <genero>Aventura</genero>
+                <pegi>7</pegi>
+                <ventas>900000</ventas>
+            </videojuego>
+            <videojuego codigo="10">
+                <titulo>Videojuego 10</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2025</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.0</valoracion>
+                <genero>Shooter</genero>
+                <pegi>12</pegi>
+                <ventas>1000000</ventas>
+            </videojuego>
+            <videojuego codigo="11">
+                <titulo>Videojuego 11</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2026</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.1</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>16</pegi>
+                <ventas>1100000</ventas>
+            </videojuego>
+            <videojuego codigo="12">
+                <titulo>Videojuego 12</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2015</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.2</valoracion>
+                <genero>Carreras</genero>
+                <pegi>18</pegi>
+                <ventas>1200000</ventas>
+            </videojuego>
+            <videojuego codigo="13">
+                <titulo>Videojuego 13</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2016</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.3</valoracion>
+                <genero>RPG</genero>
+                <pegi>7</pegi>
+                <ventas>1300000</ventas>
+            </videojuego>
+            <videojuego codigo="14">
+                <titulo>Videojuego 14</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2017</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.4</valoracion>
+                <genero>Accion</genero>
+                <pegi>12</pegi>
+                <ventas>1400000</ventas>
+            </videojuego>
+            <videojuego codigo="15">
+                <titulo>Videojuego 15</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2018</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.5</valoracion>
+                <genero>Aventura</genero>
+                <pegi>16</pegi>
+                <ventas>1500000</ventas>
+            </videojuego>
+            <videojuego codigo="16">
+                <titulo>Videojuego 16</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2019</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.6</valoracion>
+                <genero>Shooter</genero>
+                <pegi>18</pegi>
+                <ventas>1600000</ventas>
+            </videojuego>
+            <videojuego codigo="17">
+                <titulo>Videojuego 17</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2020</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.7</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>7</pegi>
+                <ventas>1700000</ventas>
+            </videojuego>
+        </videojuegos>
+    </desarrolladora>
+    <desarrolladora codigo="2" nombre="CD Projekt">
+        <pais>Polonia</pais>
+        <videojuegos>
+            <videojuego codigo="18">
+                <titulo>Videojuego 18</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2021</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.8</valoracion>
+                <genero>Carreras</genero>
+                <pegi>12</pegi>
+                <ventas>1800000</ventas>
+            </videojuego>
+            <videojuego codigo="19">
+                <titulo>Videojuego 19</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2022</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.9</valoracion>
+                <genero>RPG</genero>
+                <pegi>16</pegi>
+                <ventas>1900000</ventas>
+            </videojuego>
+            <videojuego codigo="20">
+                <titulo>Videojuego 20</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2023</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.0</valoracion>
+                <genero>Accion</genero>
+                <pegi>18</pegi>
+                <ventas>2000000</ventas>
+            </videojuego>
+            <videojuego codigo="21">
+                <titulo>Videojuego 21</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2024</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.1</valoracion>
+                <genero>Aventura</genero>
+                <pegi>7</pegi>
+                <ventas>2100000</ventas>
+            </videojuego>
+            <videojuego codigo="22">
+                <titulo>Videojuego 22</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2025</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.2</valoracion>
+                <genero>Shooter</genero>
+                <pegi>12</pegi>
+                <ventas>2200000</ventas>
+            </videojuego>
+            <videojuego codigo="23">
+                <titulo>Videojuego 23</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2026</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.3</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>16</pegi>
+                <ventas>2300000</ventas>
+            </videojuego>
+            <videojuego codigo="24">
+                <titulo>Videojuego 24</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2015</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.4</valoracion>
+                <genero>Carreras</genero>
+                <pegi>18</pegi>
+                <ventas>2400000</ventas>
+            </videojuego>
+            <videojuego codigo="25">
+                <titulo>Videojuego 25</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2016</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.5</valoracion>
+                <genero>RPG</genero>
+                <pegi>7</pegi>
+                <ventas>2500000</ventas>
+            </videojuego>
+            <videojuego codigo="26">
+                <titulo>Videojuego 26</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2017</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.6</valoracion>
+                <genero>Accion</genero>
+                <pegi>12</pegi>
+                <ventas>2600000</ventas>
+            </videojuego>
+            <videojuego codigo="27">
+                <titulo>Videojuego 27</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2018</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.7</valoracion>
+                <genero>Aventura</genero>
+                <pegi>16</pegi>
+                <ventas>2700000</ventas>
+            </videojuego>
+            <videojuego codigo="28">
+                <titulo>Videojuego 28</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2019</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.8</valoracion>
+                <genero>Shooter</genero>
+                <pegi>18</pegi>
+                <ventas>2800000</ventas>
+            </videojuego>
+            <videojuego codigo="29">
+                <titulo>Videojuego 29</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2020</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.9</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>7</pegi>
+                <ventas>2900000</ventas>
+            </videojuego>
+            <videojuego codigo="30">
+                <titulo>Videojuego 30</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2021</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.0</valoracion>
+                <genero>Carreras</genero>
+                <pegi>12</pegi>
+                <ventas>3000000</ventas>
+            </videojuego>
+            <videojuego codigo="31">
+                <titulo>Videojuego 31</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2022</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.1</valoracion>
+                <genero>RPG</genero>
+                <pegi>16</pegi>
+                <ventas>3100000</ventas>
+            </videojuego>
+            <videojuego codigo="32">
+                <titulo>Videojuego 32</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2023</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.2</valoracion>
+                <genero>Accion</genero>
+                <pegi>18</pegi>
+                <ventas>3200000</ventas>
+            </videojuego>
+            <videojuego codigo="33">
+                <titulo>Videojuego 33</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2024</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.3</valoracion>
+                <genero>Aventura</genero>
+                <pegi>7</pegi>
+                <ventas>3300000</ventas>
+            </videojuego>
+            <videojuego codigo="34">
+                <titulo>Videojuego 34</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2025</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.4</valoracion>
+                <genero>Shooter</genero>
+                <pegi>12</pegi>
+                <ventas>3400000</ventas>
+            </videojuego>
+        </videojuegos>
+    </desarrolladora>
+    <desarrolladora codigo="3" nombre="Rockstar Games">
+        <pais>Estados Unidos</pais>
+        <videojuegos>
+            <videojuego codigo="35">
+                <titulo>Videojuego 35</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2026</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.5</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>16</pegi>
+                <ventas>3500000</ventas>
+            </videojuego>
+            <videojuego codigo="36">
+                <titulo>Videojuego 36</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2015</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.6</valoracion>
+                <genero>Carreras</genero>
+                <pegi>18</pegi>
+                <ventas>3600000</ventas>
+            </videojuego>
+            <videojuego codigo="37">
+                <titulo>Videojuego 37</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2016</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.7</valoracion>
+                <genero>RPG</genero>
+                <pegi>7</pegi>
+                <ventas>3700000</ventas>
+            </videojuego>
+            <videojuego codigo="38">
+                <titulo>Videojuego 38</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2017</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.8</valoracion>
+                <genero>Accion</genero>
+                <pegi>12</pegi>
+                <ventas>3800000</ventas>
+            </videojuego>
+            <videojuego codigo="39">
+                <titulo>Videojuego 39</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2018</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.9</valoracion>
+                <genero>Aventura</genero>
+                <pegi>16</pegi>
+                <ventas>3900000</ventas>
+            </videojuego>
+            <videojuego codigo="40">
+                <titulo>Videojuego 40</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2019</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.0</valoracion>
+                <genero>Shooter</genero>
+                <pegi>18</pegi>
+                <ventas>4000000</ventas>
+            </videojuego>
+            <videojuego codigo="41">
+                <titulo>Videojuego 41</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2020</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.1</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>7</pegi>
+                <ventas>4100000</ventas>
+            </videojuego>
+            <videojuego codigo="42">
+                <titulo>Videojuego 42</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2021</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.2</valoracion>
+                <genero>Carreras</genero>
+                <pegi>12</pegi>
+                <ventas>4200000</ventas>
+            </videojuego>
+            <videojuego codigo="43">
+                <titulo>Videojuego 43</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2022</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.3</valoracion>
+                <genero>RPG</genero>
+                <pegi>16</pegi>
+                <ventas>4300000</ventas>
+            </videojuego>
+            <videojuego codigo="44">
+                <titulo>Videojuego 44</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2023</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.4</valoracion>
+                <genero>Accion</genero>
+                <pegi>18</pegi>
+                <ventas>4400000</ventas>
+            </videojuego>
+            <videojuego codigo="45">
+                <titulo>Videojuego 45</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2024</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.5</valoracion>
+                <genero>Aventura</genero>
+                <pegi>7</pegi>
+                <ventas>4500000</ventas>
+            </videojuego>
+            <videojuego codigo="46">
+                <titulo>Videojuego 46</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2025</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.6</valoracion>
+                <genero>Shooter</genero>
+                <pegi>12</pegi>
+                <ventas>4600000</ventas>
+            </videojuego>
+            <videojuego codigo="47">
+                <titulo>Videojuego 47</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2026</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.7</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>16</pegi>
+                <ventas>4700000</ventas>
+            </videojuego>
+            <videojuego codigo="48">
+                <titulo>Videojuego 48</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2015</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.8</valoracion>
+                <genero>Carreras</genero>
+                <pegi>18</pegi>
+                <ventas>4800000</ventas>
+            </videojuego>
+            <videojuego codigo="49">
+                <titulo>Videojuego 49</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2016</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.9</valoracion>
+                <genero>RPG</genero>
+                <pegi>7</pegi>
+                <ventas>4900000</ventas>
+            </videojuego>
+            <videojuego codigo="50">
+                <titulo>Videojuego 50</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2017</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.0</valoracion>
+                <genero>Accion</genero>
+                <pegi>12</pegi>
+                <ventas>5000000</ventas>
+            </videojuego>
+            <videojuego codigo="51">
+                <titulo>Videojuego 51</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2018</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.1</valoracion>
+                <genero>Aventura</genero>
+                <pegi>16</pegi>
+                <ventas>5100000</ventas>
+            </videojuego>
+        </videojuegos>
+    </desarrolladora>
+    <desarrolladora codigo="4" nombre="Sony Studios">
+        <pais>Japon</pais>
+        <videojuegos>
+            <videojuego codigo="52">
+                <titulo>Videojuego 52</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2019</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.2</valoracion>
+                <genero>Shooter</genero>
+                <pegi>18</pegi>
+                <ventas>5200000</ventas>
+            </videojuego>
+            <videojuego codigo="53">
+                <titulo>Videojuego 53</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2020</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.3</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>7</pegi>
+                <ventas>5300000</ventas>
+            </videojuego>
+            <videojuego codigo="54">
+                <titulo>Videojuego 54</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2021</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.4</valoracion>
+                <genero>Carreras</genero>
+                <pegi>12</pegi>
+                <ventas>5400000</ventas>
+            </videojuego>
+            <videojuego codigo="55">
+                <titulo>Videojuego 55</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2022</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.5</valoracion>
+                <genero>RPG</genero>
+                <pegi>16</pegi>
+                <ventas>5500000</ventas>
+            </videojuego>
+            <videojuego codigo="56">
+                <titulo>Videojuego 56</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2023</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.6</valoracion>
+                <genero>Accion</genero>
+                <pegi>18</pegi>
+                <ventas>5600000</ventas>
+            </videojuego>
+            <videojuego codigo="57">
+                <titulo>Videojuego 57</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2024</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.7</valoracion>
+                <genero>Aventura</genero>
+                <pegi>7</pegi>
+                <ventas>5700000</ventas>
+            </videojuego>
+            <videojuego codigo="58">
+                <titulo>Videojuego 58</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2025</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.8</valoracion>
+                <genero>Shooter</genero>
+                <pegi>12</pegi>
+                <ventas>5800000</ventas>
+            </videojuego>
+            <videojuego codigo="59">
+                <titulo>Videojuego 59</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2026</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.9</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>16</pegi>
+                <ventas>5900000</ventas>
+            </videojuego>
+            <videojuego codigo="60">
+                <titulo>Videojuego 60</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2015</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.0</valoracion>
+                <genero>Carreras</genero>
+                <pegi>18</pegi>
+                <ventas>6000000</ventas>
+            </videojuego>
+            <videojuego codigo="61">
+                <titulo>Videojuego 61</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2016</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.1</valoracion>
+                <genero>RPG</genero>
+                <pegi>7</pegi>
+                <ventas>6100000</ventas>
+            </videojuego>
+            <videojuego codigo="62">
+                <titulo>Videojuego 62</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2017</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.2</valoracion>
+                <genero>Accion</genero>
+                <pegi>12</pegi>
+                <ventas>6200000</ventas>
+            </videojuego>
+            <videojuego codigo="63">
+                <titulo>Videojuego 63</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2018</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.3</valoracion>
+                <genero>Aventura</genero>
+                <pegi>16</pegi>
+                <ventas>6300000</ventas>
+            </videojuego>
+            <videojuego codigo="64">
+                <titulo>Videojuego 64</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2019</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.4</valoracion>
+                <genero>Shooter</genero>
+                <pegi>18</pegi>
+                <ventas>6400000</ventas>
+            </videojuego>
+            <videojuego codigo="65">
+                <titulo>Videojuego 65</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2020</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.5</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>7</pegi>
+                <ventas>6500000</ventas>
+            </videojuego>
+            <videojuego codigo="66">
+                <titulo>Videojuego 66</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2021</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.6</valoracion>
+                <genero>Carreras</genero>
+                <pegi>12</pegi>
+                <ventas>6600000</ventas>
+            </videojuego>
+            <videojuego codigo="67">
+                <titulo>Videojuego 67</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2022</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.7</valoracion>
+                <genero>RPG</genero>
+                <pegi>16</pegi>
+                <ventas>6700000</ventas>
+            </videojuego>
+            <videojuego codigo="68">
+                <titulo>Videojuego 68</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2023</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.8</valoracion>
+                <genero>Accion</genero>
+                <pegi>18</pegi>
+                <ventas>6800000</ventas>
+            </videojuego>
+        </videojuegos>
+    </desarrolladora>
+    <desarrolladora codigo="5" nombre="FromSoftware">
+        <pais>Japon</pais>
+        <videojuegos>
+            <videojuego codigo="69">
+                <titulo>Videojuego 69</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2024</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.9</valoracion>
+                <genero>Aventura</genero>
+                <pegi>7</pegi>
+                <ventas>6900000</ventas>
+            </videojuego>
+            <videojuego codigo="70">
+                <titulo>Videojuego 70</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2025</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.0</valoracion>
+                <genero>Shooter</genero>
+                <pegi>12</pegi>
+                <ventas>7000000</ventas>
+            </videojuego>
+            <videojuego codigo="71">
+                <titulo>Videojuego 71</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2026</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.1</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>16</pegi>
+                <ventas>7100000</ventas>
+            </videojuego>
+            <videojuego codigo="72">
+                <titulo>Videojuego 72</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2015</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.2</valoracion>
+                <genero>Carreras</genero>
+                <pegi>18</pegi>
+                <ventas>7200000</ventas>
+            </videojuego>
+            <videojuego codigo="73">
+                <titulo>Videojuego 73</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2016</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.3</valoracion>
+                <genero>RPG</genero>
+                <pegi>7</pegi>
+                <ventas>7300000</ventas>
+            </videojuego>
+            <videojuego codigo="74">
+                <titulo>Videojuego 74</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2017</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.4</valoracion>
+                <genero>Accion</genero>
+                <pegi>12</pegi>
+                <ventas>7400000</ventas>
+            </videojuego>
+            <videojuego codigo="75">
+                <titulo>Videojuego 75</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2018</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.5</valoracion>
+                <genero>Aventura</genero>
+                <pegi>16</pegi>
+                <ventas>7500000</ventas>
+            </videojuego>
+            <videojuego codigo="76">
+                <titulo>Videojuego 76</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2019</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.6</valoracion>
+                <genero>Shooter</genero>
+                <pegi>18</pegi>
+                <ventas>7600000</ventas>
+            </videojuego>
+            <videojuego codigo="77">
+                <titulo>Videojuego 77</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2020</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.7</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>7</pegi>
+                <ventas>7700000</ventas>
+            </videojuego>
+            <videojuego codigo="78">
+                <titulo>Videojuego 78</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2021</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.8</valoracion>
+                <genero>Carreras</genero>
+                <pegi>12</pegi>
+                <ventas>7800000</ventas>
+            </videojuego>
+            <videojuego codigo="79">
+                <titulo>Videojuego 79</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2022</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>8.9</valoracion>
+                <genero>RPG</genero>
+                <pegi>16</pegi>
+                <ventas>7900000</ventas>
+            </videojuego>
+            <videojuego codigo="80">
+                <titulo>Videojuego 80</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2023</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.0</valoracion>
+                <genero>Accion</genero>
+                <pegi>18</pegi>
+                <ventas>8000000</ventas>
+            </videojuego>
+            <videojuego codigo="81">
+                <titulo>Videojuego 81</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2024</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.1</valoracion>
+                <genero>Aventura</genero>
+                <pegi>7</pegi>
+                <ventas>8100000</ventas>
+            </videojuego>
+            <videojuego codigo="82">
+                <titulo>Videojuego 82</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2025</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.2</valoracion>
+                <genero>Shooter</genero>
+                <pegi>12</pegi>
+                <ventas>8200000</ventas>
+            </videojuego>
+            <videojuego codigo="83">
+                <titulo>Videojuego 83</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2026</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.3</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>16</pegi>
+                <ventas>8300000</ventas>
+            </videojuego>
+            <videojuego codigo="84">
+                <titulo>Videojuego 84</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2015</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.4</valoracion>
+                <genero>Carreras</genero>
+                <pegi>18</pegi>
+                <ventas>8400000</ventas>
+            </videojuego>
+        </videojuegos>
+    </desarrolladora>
+    <desarrolladora codigo="6" nombre="Bethesda">
+        <pais>Estados Unidos</pais>
+        <videojuegos>
+            <videojuego codigo="85">
+                <titulo>Videojuego 85</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2016</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.5</valoracion>
+                <genero>RPG</genero>
+                <pegi>7</pegi>
+                <ventas>8500000</ventas>
+            </videojuego>
+            <videojuego codigo="86">
+                <titulo>Videojuego 86</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2017</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.6</valoracion>
+                <genero>Accion</genero>
+                <pegi>12</pegi>
+                <ventas>8600000</ventas>
+            </videojuego>
+            <videojuego codigo="87">
+                <titulo>Videojuego 87</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2018</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.7</valoracion>
+                <genero>Aventura</genero>
+                <pegi>16</pegi>
+                <ventas>8700000</ventas>
+            </videojuego>
+            <videojuego codigo="88">
+                <titulo>Videojuego 88</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2019</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>9.8</valoracion>
+                <genero>Shooter</genero>
+                <pegi>18</pegi>
+                <ventas>8800000</ventas>
+            </videojuego>
+            <videojuego codigo="89">
+                <titulo>Videojuego 89</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2020</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>9.9</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>7</pegi>
+                <ventas>8900000</ventas>
+            </videojuego>
+            <videojuego codigo="90">
+                <titulo>Videojuego 90</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2021</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.0</valoracion>
+                <genero>Carreras</genero>
+                <pegi>12</pegi>
+                <ventas>9000000</ventas>
+            </videojuego>
+            <videojuego codigo="91">
+                <titulo>Videojuego 91</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2022</anio>
+                <precio>29.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.1</valoracion>
+                <genero>RPG</genero>
+                <pegi>16</pegi>
+                <ventas>9100000</ventas>
+            </videojuego>
+            <videojuego codigo="92">
+                <titulo>Videojuego 92</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2023</anio>
+                <precio>39.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.2</valoracion>
+                <genero>Accion</genero>
+                <pegi>18</pegi>
+                <ventas>9200000</ventas>
+            </videojuego>
+            <videojuego codigo="93">
+                <titulo>Videojuego 93</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2024</anio>
+                <precio>49.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.3</valoracion>
+                <genero>Aventura</genero>
+                <pegi>7</pegi>
+                <ventas>9300000</ventas>
+            </videojuego>
+            <videojuego codigo="94">
+                <titulo>Videojuego 94</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2025</anio>
+                <precio>59.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.4</valoracion>
+                <genero>Shooter</genero>
+                <pegi>12</pegi>
+                <ventas>9400000</ventas>
+            </videojuego>
+            <videojuego codigo="95">
+                <titulo>Videojuego 95</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2026</anio>
+                <precio>19.99</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.5</valoracion>
+                <genero>Sandbox</genero>
+                <pegi>16</pegi>
+                <ventas>9500000</ventas>
+            </videojuego>
+            <videojuego codigo="96">
+                <titulo>Videojuego 96</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2015</anio>
+                <precio>29.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.6</valoracion>
+                <genero>Carreras</genero>
+                <pegi>18</pegi>
+                <ventas>9600000</ventas>
+            </videojuego>
+            <videojuego codigo="97">
+                <titulo>Videojuego 97</titulo>
+                <plataforma>PC</plataforma>
+                <anio>2016</anio>
+                <precio>39.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.7</valoracion>
+                <genero>RPG</genero>
+                <pegi>7</pegi>
+                <ventas>9700000</ventas>
+            </videojuego>
+            <videojuego codigo="98">
+                <titulo>Videojuego 98</titulo>
+                <plataforma>PS5</plataforma>
+                <anio>2017</anio>
+                <precio>49.989998</precio>
+                <multijugador>S</multijugador>
+                <valoracion>7.8</valoracion>
+                <genero>Accion</genero>
+                <pegi>12</pegi>
+                <ventas>9800000</ventas>
+            </videojuego>
+            <videojuego codigo="99">
+                <titulo>Videojuego 99</titulo>
+                <plataforma>Xbox</plataforma>
+                <anio>2018</anio>
+                <precio>59.989998</precio>
+                <multijugador>N</multijugador>
+                <valoracion>7.9</valoracion>
+                <genero>Aventura</genero>
+                <pegi>16</pegi>
+                <ventas>9900000</ventas>
+            </videojuego>
+            <videojuego codigo="100">
+                <titulo>Videojuego 100</titulo>
+                <plataforma>Nintendo Switch</plataforma>
+                <anio>2019</anio>
+                <precio>19.99</precio>
+                <multijugador>S</multijugador>
+                <valoracion>8.0</valoracion>
+                <genero>Shooter</genero>
+                <pegi>18</pegi>
+                <ventas>10000000</ventas>
+            </videojuego>
+        </videojuegos>
+    </desarrolladora>
+</desarrolladoras>
