@@ -1,3 +1,21 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Scanner;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -6,1967 +24,501 @@ import org.w3c.dom.NodeList;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.KXml2Driver;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-
-import java.util.Scanner;
-
 /*
- * ==============================================================
+ * ============================================================
  * PRÁCTICA Nº3 - ACCESO A DATOS
- * Gestión avanzada de datos documentales XML
- * ==============================================================
+ * XML, DOM, XStream, XPath y XSLT
+ * ============================================================
  *
- * Dominio:
- * Videojuegos y desarrolladoras.
+ * COMPILAR (Windows):
+ * javac -cp ".;*" Videojuego.java GenerarDatosIniciales.java Practica3Videojuegos.java
  *
- * Tecnologías utilizadas:
+ * GENERAR EL BINARIO INICIAL:
+ * java -cp ".;*" GenerarDatosIniciales
  *
- * - Ficheros binarios de acceso directo.
- * - DOM.
- * - XML.
- * - XStream.
- * - XPath.
- * - XSLT.
+ * EJECUTAR:
+ * java -cp ".;*" Practica3Videojuegos
  *
- * Fichero binario:
- * videojuegos.dat
+ * FLUJO PRINCIPAL:
+ * videojuegos.dat -> RandomAccessFile -> DOM -> videojuegos.xml
+ * Videojuego -> XStream -> XML -> Videojuego
+ * videojuegos_masivo.xml -> XPath
+ * videojuegos_masivo.xml + videojuegos.xsl -> videojuegos.html
  *
- * Estructura de cada registro:
+ * CLASES IMPORTANTES:
+ * RandomAccessFile -> lee el fichero binario.
+ * Document -> representa todo el XML en memoria. doc es la variable.
+ * Element -> representa una etiqueta XML.
+ * Node -> representa un nodo genérico.
+ * NodeList -> lista de nodos.
+ * DocumentBuilder -> newDocument() crea XML; parse() carga XML.
+ * XStream -> toXML() serializa; fromXML() deserializa.
+ * XPath -> consulta y filtra nodos XML.
+ * Transformer -> guarda DOM a XML y aplica XSLT.
  *
- * Código                  int       -> 4 bytes
- * Título                  40 char   -> 80 bytes
- * Plataforma              15 char   -> 30 bytes
- * Año                     short     -> 2 bytes
- * Precio                  float     -> 4 bytes
- * Multijugador            boolean   -> 1 byte
- * Valoración              float     -> 4 bytes
- * Código desarrolladora   short     -> 2 bytes
- * Género                  20 char   -> 40 bytes
- * PEGI                     short     -> 2 bytes
- * Ventas                   int       -> 4 bytes
- *
- * TOTAL:
- *
- * 4 + 80 + 30 + 2 + 4 + 1 + 4 + 2 + 40 + 2 + 4
- * = 173 bytes.
+ * REGISTRO BINARIO: 173 bytes
+ * Código 4 + Título 80 + Plataforma 30 + Año 2 + Precio 4
+ * + Multijugador 1 + Valoración 4 + Desarrolladora 2
+ * + Género 40 + PEGI 2 + Ventas 4 = 173 bytes.
+ * ============================================================
  */
-
 public class Practica3Videojuegos {
 
-    // ============================================================
-    // CONSTANTES
-    // ============================================================
+    private static final String BINARIO = "videojuegos.dat";
+    private static final String XML = "videojuegos.xml";
+    private static final String XML_MASIVO = "videojuegos_masivo.xml";
+    private static final String XML_XSTREAM = "videojuego_xstream.xml";
+    private static final String XSL = "videojuegos.xsl";
+    private static final String HTML = "videojuegos.html";
 
-    private static final String FICHERO_BINARIO =
-            "videojuegos.dat";
-
-    private static final String FICHERO_XML =
-            "videojuegos.xml";
-
-    private static final String FICHERO_XSTREAM =
-            "videojuego_xstream.xml";
-
-    private static final int LONGITUD_TITULO = 40;
-    private static final int LONGITUD_PLATAFORMA = 15;
-    private static final int LONGITUD_GENERO = 20;
-
-    private static final int TAMANO_REGISTRO = 173;
-
-
-    // ============================================================
-    // MAIN
-    // ============================================================
+    private static final int LONG_TITULO = 40;
+    private static final int LONG_PLATAFORMA = 15;
+    private static final int LONG_GENERO = 20;
+    private static final int TAM_REGISTRO = 173;
 
     public static void main(String[] args) {
-
-        Scanner scanner =
-                new Scanner(System.in);
-
+        Scanner sc = new Scanner(System.in);
         int opcion = 0;
 
         do {
-
             mostrarMenu();
-
             try {
-
-                opcion =
-                        Integer.parseInt(
-                                scanner.nextLine().trim()
-                        );
+                opcion = Integer.parseInt(sc.nextLine());
 
                 switch (opcion) {
-
-                    case 1:
-                        generarXmlDesdeBinario();
-                        break;
-
-                    case 2:
-                        modificarPrecioXml(scanner);
-                        break;
-
-                    case 3:
-                        eliminarVideojuegoXml(scanner);
-                        break;
-
-                    case 4:
-                        serializarDeserializarXStream();
-                        break;
-
-                    case 5:
-                        generarXmlMasivo();
-                        break;
-                    case 6:
-                        consultarConXPath(scanner);
-                        break;
-
-                    case 7:
-                        generarHtmlConXslt();
-                        break;
-
-                    case 8:
-                        System.out.println(
-                                "Programa finalizado."
-                        );
-                        break;
-
-                    default:
-                        System.out.println(
-                                "Opción no válida."
-                        );
+                    case 1 -> generarXmlDesdeBinario();
+                    case 2 -> modificarPrecioXml(sc);
+                    case 3 -> eliminarVideojuegoXml(sc);
+                    case 4 -> serializarConXStream();
+                    case 5 -> generarXmlMasivo();
+                    case 6 -> consultarConXPath(sc);
+                    case 7 -> generarHtmlConXslt();
+                    case 8 -> System.out.println("Programa finalizado.");
+                    default -> System.out.println("Opción no válida.");
                 }
-
             } catch (NumberFormatException e) {
-
-                System.out.println(
-                        "Error: debes introducir una opción numérica."
-                );
+                System.out.println("Debes introducir un número.");
             }
 
             System.out.println();
-
         } while (opcion != 8);
 
-        scanner.close();
+        sc.close();
     }
-
-
-    // ============================================================
-    // MENÚ
-    // ============================================================
 
     private static void mostrarMenu() {
-
-        System.out.println(
-                "=============================================================="
-        );
-
-        System.out.println(
-                "     GESTIÓN AVANZADA DE VIDEOJUEGOS Y FICHEROS XML"
-        );
-
-        System.out.println(
-                "=============================================================="
-        );
-
-        System.out.println(
-                "1.- Generar fichero XML desde videojuegos.dat"
-        );
-
-        System.out.println(
-                "2.- Modificar el precio de un videojuego en el XML"
-        );
-
-        System.out.println(
-                "3.- Eliminar un videojuego directamente del XML"
-        );
-
-        System.out.println(
-                "4.- Serializar y deserializar un videojuego con XStream"
-        );
-
-        System.out.println(
-                "5.- Generar XML masivo de desarrolladoras y videojuegos"
-        );
-
-        System.out.println(
-                "6.- Consultar datos utilizando XPath"
-        );
-
-        System.out.println(
-                "7.- Generar fichero HTML y PDF mediante XSLT"
-        );
-
-        System.out.println(
-                "8.- Salir"
-        );
-
-        System.out.println(
-                "--------------------------------------------------------------"
-        );
-
-        System.out.print(
-                "Seleccione una opción: "
-        );
+        System.out.println("===== GESTIÓN AVANZADA DE VIDEOJUEGOS =====");
+        System.out.println("1. Generar XML desde videojuegos.dat");
+        System.out.println("2. Modificar precio en el XML");
+        System.out.println("3. Eliminar videojuego del XML");
+        System.out.println("4. Serializar/deserializar con XStream");
+        System.out.println("5. Generar XML masivo (6 desarrolladoras / 100 juegos)");
+        System.out.println("6. Consultar con XPath");
+        System.out.println("7. Generar HTML mediante XSLT");
+        System.out.println("8. Salir");
+        System.out.print("Opción: ");
     }
 
-
-    // ============================================================
-    // OPCIÓN 1
-    // GENERAR XML DESDE EL FICHERO BINARIO
-    // ============================================================
-
+    // OPCIÓN 1: binario -> DOM -> XML.
     private static void generarXmlDesdeBinario() {
+        File fichero = new File(BINARIO);
 
-        File archivoBinario =
-                new File(FICHERO_BINARIO);
-
-        /*
-         * Comprobamos que videojuegos.dat exista.
-         */
-        if (!archivoBinario.exists()) {
-
-            System.out.println(
-                    "Error: el fichero "
-                            + FICHERO_BINARIO
-                            + " no existe."
-            );
-
+        if (!fichero.exists()) {
+            System.out.println("No existe " + BINARIO + ". Ejecuta antes GenerarDatosIniciales.");
             return;
         }
 
         try {
-
-            /*
-             * Creamos las herramientas necesarias
-             * para trabajar con DOM.
-             */
-            DocumentBuilderFactory factory =
-                    DocumentBuilderFactory.newInstance();
-
-            DocumentBuilder builder =
-                    factory.newDocumentBuilder();
-
-            /*
-             * Creamos un documento XML vacío.
-             */
-            Document doc =
-                    builder.newDocument();
-
-            /*
-             * Creamos el elemento raíz:
-             *
-             * <videojuegos>
-             */
-            Element raiz =
-                    doc.createElement("videojuegos");
-
+            Document doc = nuevoDocumento();
+            Element raiz = doc.createElement("videojuegos");
             doc.appendChild(raiz);
 
-            /*
-             * Abrimos videojuegos.dat en modo lectura.
-             */
-            try (
-                    RandomAccessFile raf =
-                            new RandomAccessFile(
-                                    archivoBinario,
-                                    "r"
-                            )
-            ) {
-
-                /*
-                 * Cada registro debe ocupar exactamente
-                 * 173 bytes.
-                 */
-                if (
-                        raf.length()
-                                % TAMANO_REGISTRO
-                                != 0
-                ) {
-
-                    System.out.println(
-                            "Error: el fichero no contiene "
-                                    + "registros completos de "
-                                    + TAMANO_REGISTRO
-                                    + " bytes."
-                    );
-
+            try (RandomAccessFile raf = new RandomAccessFile(fichero, "r")) {
+                if (raf.length() % TAM_REGISTRO != 0) {
+                    System.out.println("El fichero no contiene registros completos de 173 bytes.");
                     return;
                 }
 
-                int registrosLeidos = 0;
-                int registrosXml = 0;
+                // Lectura secuencial del fichero binario.
+                while (raf.getFilePointer() < raf.length()) {
+                    int codigo = raf.readInt();
+                    String titulo = leerCadena(raf, LONG_TITULO);
+                    String plataforma = leerCadena(raf, LONG_PLATAFORMA);
+                    short anio = raf.readShort();
+                    float precio = raf.readFloat();
+                    boolean multijugador = raf.readBoolean();
+                    float valoracion = raf.readFloat();
+                    short desarrolladora = raf.readShort();
+                    String genero = leerCadena(raf, LONG_GENERO);
+                    short pegi = raf.readShort();
+                    int ventas = raf.readInt();
 
-                /*
-                 * Recorremos secuencialmente todo
-                 * el fichero binario.
-                 */
-                while (
-                        raf.getFilePointer()
-                                < raf.length()
-                ) {
-
-                    /*
-                     * Los datos deben leerse exactamente
-                     * en el mismo orden en que fueron escritos.
-                     */
-
-                    int codigo =
-                            raf.readInt();
-
-                    String titulo =
-                            leerCadenaFija(
-                                    raf,
-                                    LONGITUD_TITULO
-                            );
-
-                    String plataforma =
-                            leerCadenaFija(
-                                    raf,
-                                    LONGITUD_PLATAFORMA
-                            );
-
-                    short anio =
-                            raf.readShort();
-
-                    float precio =
-                            raf.readFloat();
-
-                    boolean multijugador =
-                            raf.readBoolean();
-
-                    float valoracion =
-                            raf.readFloat();
-
-                    short codigoDesarrolladora =
-                            raf.readShort();
-
-                    String genero =
-                            leerCadenaFija(
-                                    raf,
-                                    LONGITUD_GENERO
-                            );
-
-                    short pegi =
-                            raf.readShort();
-
-                    int ventas =
-                            raf.readInt();
-
-                    registrosLeidos++;
-
-                    /*
-                     * Código -1 significa borrado lógico.
-                     */
+                    // Código -1 = borrado lógico.
                     if (codigo == -1) {
                         continue;
                     }
 
-                    /*
-                     * Creamos:
-                     *
-                     * <videojuego>
-                     */
-                    Element videojuego =
-                            doc.createElement(
-                                    "videojuego"
-                            );
+                    Element juego = doc.createElement("videojuego");
+                    juego.setAttribute("codigo", String.valueOf(codigo));
+                    juego.setAttribute("desarrolladora", String.valueOf(desarrolladora));
 
-                    /*
-                     * Añadimos atributos:
-                     *
-                     * codigo="1"
-                     * desarrolladora="1"
-                     */
-                    videojuego.setAttribute(
-                            "codigo",
-                            String.valueOf(codigo)
-                    );
+                    agregarElemento(doc, juego, "titulo", titulo);
+                    agregarElemento(doc, juego, "plataforma", plataforma);
+                    agregarElemento(doc, juego, "anio", String.valueOf(anio));
+                    agregarElemento(doc, juego, "precio", String.valueOf(precio));
+                    agregarElemento(doc, juego, "multijugador", multijugador ? "S" : "N");
+                    agregarElemento(doc, juego, "valoracion", String.valueOf(valoracion));
+                    agregarElemento(doc, juego, "genero", genero);
+                    agregarElemento(doc, juego, "pegi", String.valueOf(pegi));
+                    agregarElemento(doc, juego, "ventas", String.valueOf(ventas));
 
-                    videojuego.setAttribute(
-                            "desarrolladora",
-                            String.valueOf(
-                                    codigoDesarrolladora
-                            )
-                    );
-
-                    /*
-                     * Creamos los elementos hijos.
-                     */
-                    agregarElemento(
-                            doc,
-                            videojuego,
-                            "titulo",
-                            titulo
-                    );
-
-                    agregarElemento(
-                            doc,
-                            videojuego,
-                            "plataforma",
-                            plataforma
-                    );
-
-                    agregarElemento(
-                            doc,
-                            videojuego,
-                            "anio",
-                            String.valueOf(anio)
-                    );
-
-                    agregarElemento(
-                            doc,
-                            videojuego,
-                            "precio",
-                            String.valueOf(precio)
-                    );
-
-                    agregarElemento(
-                            doc,
-                            videojuego,
-                            "multijugador",
-                            multijugador ? "S" : "N"
-                    );
-
-                    agregarElemento(
-                            doc,
-                            videojuego,
-                            "valoracion",
-                            String.valueOf(valoracion)
-                    );
-
-                    agregarElemento(
-                            doc,
-                            videojuego,
-                            "genero",
-                            genero
-                    );
-
-                    agregarElemento(
-                            doc,
-                            videojuego,
-                            "pegi",
-                            String.valueOf(pegi)
-                    );
-
-                    agregarElemento(
-                            doc,
-                            videojuego,
-                            "ventas",
-                            String.valueOf(ventas)
-                    );
-
-                    /*
-                     * Añadimos <videojuego> al elemento raíz.
-                     */
-                    raiz.appendChild(
-                            videojuego
-                    );
-
-                    registrosXml++;
+                    raiz.appendChild(juego);
                 }
-
-                System.out.println(
-                        "Registros leídos del binario: "
-                                + registrosLeidos
-                );
-
-                System.out.println(
-                        "Videojuegos añadidos al XML: "
-                                + registrosXml
-                );
             }
 
-            /*
-             * Guardamos el árbol DOM en videojuegos.xml.
-             */
-            guardarDocumentoXml(
-                    doc,
-                    new File(FICHERO_XML)
-            );
-
-            System.out.println();
-
-            System.out.println(
-                    "Fichero "
-                            + FICHERO_XML
-                            + " generado correctamente."
-            );
+            guardarXml(doc, new File(XML));
+            System.out.println(XML + " generado correctamente.");
 
         } catch (Exception e) {
-
-            System.out.println(
-                    "Error al generar el XML: "
-                            + e.getMessage()
-            );
-
-            e.printStackTrace();
+            System.out.println("Error al generar XML: " + e.getMessage());
         }
     }
 
-
-    // ============================================================
-    // OPCIÓN 2
-    // MODIFICAR PRECIO EN XML
-    // ============================================================
-
-    private static void modificarPrecioXml(
-            Scanner scanner) {
-
-        File archivoXml =
-                new File(FICHERO_XML);
-
-        if (!archivoXml.exists()) {
-
-            System.out.println(
-                    "Error: primero debes generar "
-                            + FICHERO_XML
-                            + " con la opción 1."
-            );
-
+    // OPCIÓN 2: parse() carga el XML y setTextContent() cambia <precio>.
+    private static void modificarPrecioXml(Scanner sc) {
+        if (!new File(XML).exists()) {
+            System.out.println("Primero genera " + XML + " con la opción 1.");
             return;
         }
 
-        System.out.print(
-                "Introduce el código del videojuego: "
-        );
-
-        String codigoBuscado =
-                scanner.nextLine().trim();
+        System.out.print("Código del videojuego: ");
+        String codigo = sc.nextLine();
 
         try {
+            Document doc = cargarXml(XML);
+            Element juego = buscarJuegoPorCodigo(doc, codigo);
 
-            /*
-             * Cargamos videojuegos.xml mediante DOM.
-             */
-            DocumentBuilderFactory factory =
-                    DocumentBuilderFactory.newInstance();
-
-            DocumentBuilder builder =
-                    factory.newDocumentBuilder();
-
-            Document doc =
-                    builder.parse(archivoXml);
-
-            doc.getDocumentElement().normalize();
-
-            /*
-             * Recuperamos todos los nodos <videojuego>.
-             */
-            NodeList listaVideojuegos =
-                    doc.getElementsByTagName(
-                            "videojuego"
-                    );
-
-            boolean encontrado = false;
-
-            for (
-                    int i = 0;
-                    i < listaVideojuegos.getLength();
-                    i++
-            ) {
-
-                Node nodo =
-                        listaVideojuegos.item(i);
-
-                if (
-                        nodo.getNodeType()
-                                == Node.ELEMENT_NODE
-                ) {
-
-                    Element videojuego =
-                            (Element) nodo;
-
-                    String codigoActual =
-                            videojuego.getAttribute(
-                                    "codigo"
-                            );
-
-                    if (
-                            codigoActual.equals(
-                                    codigoBuscado
-                            )
-                    ) {
-
-                        encontrado = true;
-
-                        String titulo =
-                                videojuego
-                                        .getElementsByTagName(
-                                                "titulo"
-                                        )
-                                        .item(0)
-                                        .getTextContent();
-
-                        /*
-                         * Localizamos:
-                         *
-                         * <precio>...</precio>
-                         */
-                        Node nodoPrecio =
-                                videojuego
-                                        .getElementsByTagName(
-                                                "precio"
-                                        )
-                                        .item(0);
-
-                        String precioActual =
-                                nodoPrecio.getTextContent();
-
-                        System.out.println();
-
-                        System.out.println(
-                                "Videojuego encontrado:"
-                        );
-
-                        System.out.println(
-                                "Código: "
-                                        + codigoActual
-                        );
-
-                        System.out.println(
-                                "Título: "
-                                        + titulo
-                        );
-
-                        System.out.println(
-                                "Precio actual: "
-                                        + precioActual
-                                        + " EUR"
-                        );
-
-                        System.out.print(
-                                "Introduce el nuevo precio: "
-                        );
-
-                        float nuevoPrecio =
-                                Float.parseFloat(
-                                        scanner.nextLine()
-                                                .trim()
-                                                .replace(
-                                                        ',',
-                                                        '.'
-                                                )
-                                );
-
-                        /*
-                         * Cambiamos el contenido del nodo.
-                         */
-                        nodoPrecio.setTextContent(
-                                String.valueOf(
-                                        nuevoPrecio
-                                )
-                        );
-
-                        /*
-                         * Guardamos todo el documento XML
-                         * actualizado.
-                         */
-                        guardarDocumentoXml(
-                                doc,
-                                archivoXml
-                        );
-
-                        System.out.println(
-                                "Precio modificado correctamente."
-                        );
-
-                        break;
-                    }
-                }
+            if (juego == null) {
+                System.out.println("Código no encontrado.");
+                return;
             }
 
-            if (!encontrado) {
+            Node precio = juego.getElementsByTagName("precio").item(0);
+            System.out.println("Título: " + texto(juego, "titulo"));
+            System.out.println("Precio actual: " + precio.getTextContent());
 
-                System.out.println(
-                        "No existe ningún videojuego "
-                                + "con código "
-                                + codigoBuscado
-                                + "."
-                );
-            }
+            System.out.print("Nuevo precio: ");
+            float nuevoPrecio = Float.parseFloat(sc.nextLine().replace(',', '.'));
 
-        } catch (NumberFormatException e) {
-
-            System.out.println(
-                    "Error: el precio introducido "
-                            + "no es válido."
-            );
+            precio.setTextContent(String.valueOf(nuevoPrecio));
+            guardarXml(doc, new File(XML));
+            System.out.println("Precio modificado.");
 
         } catch (Exception e) {
-
-            System.out.println(
-                    "Error al modificar el XML: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al modificar XML: " + e.getMessage());
         }
     }
 
-
-    // ============================================================
-    // OPCIÓN 3
-    // ELIMINAR VIDEOJUEGO DEL XML
-    // ============================================================
-
-    private static void eliminarVideojuegoXml(
-            Scanner scanner) {
-
-        File archivoXml =
-                new File(FICHERO_XML);
-
-        if (!archivoXml.exists()) {
-
-            System.out.println(
-                    "Error: primero debes generar "
-                            + FICHERO_XML
-                            + " con la opción 1."
-            );
-
+    // OPCIÓN 3: removeChild() elimina el nodo completo del XML.
+    private static void eliminarVideojuegoXml(Scanner sc) {
+        if (!new File(XML).exists()) {
+            System.out.println("Primero genera " + XML + " con la opción 1.");
             return;
         }
 
-        System.out.print(
-                "Introduce el código del videojuego "
-                        + "que deseas eliminar: "
-        );
-
-        String codigoBuscado =
-                scanner.nextLine().trim();
+        System.out.print("Código a eliminar: ");
+        String codigo = sc.nextLine();
 
         try {
+            Document doc = cargarXml(XML);
+            Element juego = buscarJuegoPorCodigo(doc, codigo);
 
-            /*
-             * Cargamos el XML mediante DOM.
-             */
-            DocumentBuilderFactory factory =
-                    DocumentBuilderFactory.newInstance();
-
-            DocumentBuilder builder =
-                    factory.newDocumentBuilder();
-
-            Document doc =
-                    builder.parse(archivoXml);
-
-            doc.getDocumentElement().normalize();
-
-            NodeList listaVideojuegos =
-                    doc.getElementsByTagName(
-                            "videojuego"
-                    );
-
-            boolean encontrado = false;
-
-            for (
-                    int i = 0;
-                    i < listaVideojuegos.getLength();
-                    i++
-            ) {
-
-                Node nodo =
-                        listaVideojuegos.item(i);
-
-                if (
-                        nodo.getNodeType()
-                                == Node.ELEMENT_NODE
-                ) {
-
-                    Element videojuego =
-                            (Element) nodo;
-
-                    String codigoActual =
-                            videojuego.getAttribute(
-                                    "codigo"
-                            );
-
-                    if (
-                            codigoActual.equals(
-                                    codigoBuscado
-                            )
-                    ) {
-
-                        encontrado = true;
-
-                        String titulo =
-                                videojuego
-                                        .getElementsByTagName(
-                                                "titulo"
-                                        )
-                                        .item(0)
-                                        .getTextContent();
-
-                        System.out.println();
-
-                        System.out.println(
-                                "Videojuego encontrado:"
-                        );
-
-                        System.out.println(
-                                "Código: "
-                                        + codigoActual
-                        );
-
-                        System.out.println(
-                                "Título: "
-                                        + titulo
-                        );
-
-                        System.out.print(
-                                "¿Seguro que deseas eliminarlo? (S/N): "
-                        );
-
-                        String respuesta =
-                                scanner.nextLine().trim();
-
-                        if (
-                                respuesta.equalsIgnoreCase(
-                                        "S"
-                                )
-                        ) {
-
-                            /*
-                             * Obtenemos el padre de <videojuego>.
-                             */
-                            Node padre =
-                                    nodo.getParentNode();
-
-                            /*
-                             * Eliminamos completamente el nodo.
-                             */
-                            padre.removeChild(nodo);
-
-                            /*
-                             * Guardamos de nuevo el XML.
-                             */
-                            guardarDocumentoXml(
-                                    doc,
-                                    archivoXml
-                            );
-
-                            System.out.println(
-                                    "Videojuego eliminado "
-                                            + "correctamente del XML."
-                            );
-
-                        } else {
-
-                            System.out.println(
-                                    "Operación cancelada."
-                            );
-                        }
-
-                        break;
-                    }
-                }
+            if (juego == null) {
+                System.out.println("Código no encontrado.");
+                return;
             }
 
-            if (!encontrado) {
+            System.out.println("Título: " + texto(juego, "titulo"));
+            System.out.print("¿Eliminar? (S/N): ");
 
-                System.out.println(
-                        "No existe ningún videojuego "
-                                + "con código "
-                                + codigoBuscado
-                                + "."
-                );
+            if (sc.nextLine().equalsIgnoreCase("S")) {
+                juego.getParentNode().removeChild(juego);
+                guardarXml(doc, new File(XML));
+                System.out.println("Videojuego eliminado del XML.");
+            } else {
+                System.out.println("Operación cancelada.");
             }
 
         } catch (Exception e) {
-
-            System.out.println(
-                    "Error al eliminar del XML: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al eliminar: " + e.getMessage());
         }
     }
 
-
-    // ============================================================
-    // OPCIÓN 4
-    // SERIALIZAR Y DESERIALIZAR CON XSTREAM
-    // ============================================================
-
-    /*
-     * SERIALIZAR:
-     *
-     * Objeto Java
-     *      ↓
-     *   XStream
-     *      ↓
-     * XML
-     *
-     * DESERIALIZAR:
-     *
-     * XML
-     *      ↓
-     *   XStream
-     *      ↓
-     * Objeto Java
-     */
-    private static void serializarDeserializarXStream() {
-
+    // OPCIÓN 4: toXML() serializa y fromXML() deserializa.
+    private static void serializarConXStream() {
         try {
-
-            /*
-             * Creamos un objeto Videojuego
-             * únicamente en memoria.
-             */
-            Videojuego videojuegoOriginal =
-                    new Videojuego(
-                            1001,
-                            "The Last of Us",
-                            "PS5",
-                            (short) 2022,
-                            49.99f,
-                            false,
-                            9.6f,
-                            (short) 4,
-                            "Aventura",
-                            (short) 18,
-                            20000000
-                    );
-
-            /*
-             * Creamos XStream utilizando el driver
-             * KXml2Driver pedido en el enunciado.
-             */
-            XStream xstream =
-                    new XStream(
-                            new KXml2Driver()
-                    );
-
-            /*
-             * Permitimos que XStream pueda
-             * deserializar nuestra clase Videojuego.
-             */
-            xstream.allowTypes(
-                    new Class[]{
-                            Videojuego.class
-                    }
+            Videojuego original = new Videojuego(
+                    1001, "The Last of Us", "PS5", (short) 2022,
+                    49.99f, false, 9.6f, (short) 4,
+                    "Aventura", (short) 18, 20000000
             );
 
-            /*
-             * Indicamos que la etiqueta principal
-             * del XML se llamará:
-             *
-             * <videojuego>
-             */
-            xstream.alias(
-                    "videojuego",
-                    Videojuego.class
-            );
+            XStream xstream = new XStream(new KXml2Driver());
+            xstream.allowTypes(new Class[]{Videojuego.class});
+            xstream.alias("videojuego", Videojuego.class);
 
-            /*
-             * ====================================================
-             * SERIALIZACIÓN
-             * ====================================================
-             *
-             * Convertimos el objeto Java en XML.
-             */
-            String xml =
-                    xstream.toXML(
-                            videojuegoOriginal
-                    );
+            String xml = xstream.toXML(original);
 
-            System.out.println();
-
-            System.out.println(
-                    "===== OBJETO ORIGINAL ====="
-            );
-
-            System.out.println(
-                    videojuegoOriginal
-            );
-
-            System.out.println();
-
-            System.out.println(
-                    "===== OBJETO SERIALIZADO A XML ====="
-            );
-
-            System.out.println(xml);
-
-            /*
-             * Guardamos el XML generado en disco.
-             */
-            try (
-                    FileWriter writer =
-                            new FileWriter(
-                                    FICHERO_XSTREAM
-                            )
-            ) {
-
+            try (FileWriter writer = new FileWriter(XML_XSTREAM)) {
                 writer.write(xml);
             }
 
-            System.out.println();
+            Videojuego recuperado = (Videojuego) xstream.fromXML(xml);
 
-            System.out.println(
-                    "Fichero "
-                            + FICHERO_XSTREAM
-                            + " generado correctamente."
-            );
-
-            /*
-             * ====================================================
-             * DESERIALIZACIÓN
-             * ====================================================
-             *
-             * Leemos el XML y reconstruimos
-             * un objeto Videojuego.
-             */
-            Videojuego videojuegoRecuperado =
-                    (Videojuego)
-                            xstream.fromXML(
-                                    xml
-                            );
-
-            System.out.println();
-
-            System.out.println(
-                    "===== OBJETO DESERIALIZADO ====="
-            );
-
-            System.out.println(
-                    videojuegoRecuperado
-            );
-
-            System.out.println();
-
-            System.out.println(
-                    "Serialización y deserialización "
-                            + "realizadas correctamente."
-            );
+            System.out.println("Objeto original:   " + original);
+            System.out.println("Objeto recuperado: " + recuperado);
+            System.out.println(XML_XSTREAM + " generado.");
 
         } catch (Exception e) {
-
-            System.out.println(
-                    "Error durante XStream: "
-                            + e.getMessage()
-            );
-
-            e.printStackTrace();
+            System.out.println("Error con XStream: " + e.getMessage());
         }
     }
 
-    // ============================================================
-// OPCIÓN 5
-// GENERAR XML MASIVO
-// ============================================================
-
-/*
- * Genera un nuevo XML con 6 desarrolladoras y
- * 100 videojuegos distribuidos entre ellas.
- *
- * Este fichero se utilizará después para realizar
- * las consultas XPath.
- */
-private static void generarXmlMasivo() {
-
-    final String FICHERO_MASIVO =
-            "videojuegos_masivo.xml";
-
-    try {
-
-        DocumentBuilderFactory factory =
-                DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder builder =
-                factory.newDocumentBuilder();
-
-        Document doc =
-                builder.newDocument();
-
-        /*
-         * Elemento raíz:
-         *
-         * <desarrolladoras>
-         */
-        Element raiz =
-                doc.createElement("desarrolladoras");
-
-        doc.appendChild(raiz);
-
-        /*
-         * Datos de las 6 desarrolladoras.
-         */
-        String[] nombresDesarrolladoras = {
-                "Mojang",
-                "CD Projekt",
-                "Rockstar Games",
-                "Sony Studios",
-                "FromSoftware",
-                "Bethesda"
+    // OPCIÓN 5: genera 6 desarrolladoras y exactamente 100 videojuegos.
+    private static void generarXmlMasivo() {
+        String[] desarrolladoras = {
+                "Mojang", "CD Projekt", "Rockstar Games",
+                "Sony Studios", "FromSoftware", "Bethesda"
         };
 
         String[] paises = {
-                "Suecia",
-                "Polonia",
-                "Estados Unidos",
-                "Japon",
-                "Japon",
-                "Estados Unidos"
+                "Suecia", "Polonia", "Estados Unidos",
+                "Japon", "Japon", "Estados Unidos"
         };
 
-        String[] plataformas = {
-                "PC",
-                "PS5",
-                "Xbox",
-                "Nintendo Switch"
-        };
+        String[] plataformas = {"PC", "PS5", "Xbox", "Nintendo Switch"};
+        String[] generos = {"RPG", "Accion", "Aventura", "Shooter", "Sandbox", "Carreras"};
 
-        String[] generos = {
-                "RPG",
-                "Accion",
-                "Aventura",
-                "Shooter",
-                "Sandbox",
-                "Carreras"
-        };
+        try {
+            Document doc = nuevoDocumento();
+            Element raiz = doc.createElement("desarrolladoras");
+            doc.appendChild(raiz);
 
-        int codigoVideojuego = 1;
+            int codigoJuego = 1;
 
-        /*
-         * Recorremos las 6 desarrolladoras.
-         */
-        for (
-                int i = 0;
-                i < nombresDesarrolladoras.length;
-                i++
-        ) {
+            for (int i = 0; i < desarrolladoras.length; i++) {
+                Element desarrolladora = doc.createElement("desarrolladora");
+                desarrolladora.setAttribute("codigo", String.valueOf(i + 1));
+                desarrolladora.setAttribute("nombre", desarrolladoras[i]);
+                agregarElemento(doc, desarrolladora, "pais", paises[i]);
 
-            /*
-             * Creamos:
-             *
-             * <desarrolladora codigo="1">
-             */
-            Element desarrolladora =
-                    doc.createElement(
-                            "desarrolladora"
-                    );
+                Element juegos = doc.createElement("videojuegos");
+                desarrolladora.appendChild(juegos);
 
-            desarrolladora.setAttribute(
-                    "codigo",
-                    String.valueOf(i + 1)
-            );
+                // 17 + 17 + 17 + 17 + 16 + 16 = 100.
+                int cantidad = i < 4 ? 17 : 16;
 
-            desarrolladora.setAttribute(
-                    "nombre",
-                    nombresDesarrolladoras[i]
-            );
+                for (int j = 0; j < cantidad; j++) {
+                    Element juego = doc.createElement("videojuego");
+                    juego.setAttribute("codigo", String.valueOf(codigoJuego));
 
-            agregarElemento(
-                    doc,
-                    desarrolladora,
-                    "pais",
-                    paises[i]
-            );
+                    agregarElemento(doc, juego, "titulo", "Videojuego " + codigoJuego);
+                    agregarElemento(doc, juego, "plataforma",
+                            plataformas[(codigoJuego - 1) % plataformas.length]);
+                    agregarElemento(doc, juego, "anio",
+                            String.valueOf(2015 + codigoJuego % 12));
+                    agregarElemento(doc, juego, "precio",
+                            String.valueOf(19.99f + (codigoJuego % 5) * 10));
+                    agregarElemento(doc, juego, "multijugador",
+                            codigoJuego % 2 == 0 ? "S" : "N");
+                    agregarElemento(doc, juego, "valoracion",
+                            String.valueOf(7.0f + (codigoJuego % 30) / 10.0f));
+                    agregarElemento(doc, juego, "genero",
+                            generos[(codigoJuego - 1) % generos.length]);
+                    agregarElemento(doc, juego, "pegi",
+                            String.valueOf(new int[]{7, 12, 16, 18}[codigoJuego % 4]));
+                    agregarElemento(doc, juego, "ventas",
+                            String.valueOf(codigoJuego * 100000));
 
-            /*
-             * Dentro de cada desarrolladora
-             * tendremos un nodo <videojuegos>.
-             */
-            Element listaVideojuegos =
-                    doc.createElement(
-                            "videojuegos"
-                    );
-
-            desarrolladora.appendChild(
-                    listaVideojuegos
-            );
-
-            /*
-             * Repartimos 100 videojuegos:
-             *
-             * Las primeras 4 desarrolladoras tendrán 17.
-             * Las últimas 2 tendrán 16.
-             *
-             * 17 + 17 + 17 + 17 + 16 + 16 = 100
-             */
-            int cantidad =
-                    i < 4 ? 17 : 16;
-
-            for (
-                    int j = 0;
-                    j < cantidad;
-                    j++
-            ) {
-
-                Element videojuego =
-                        doc.createElement(
-                                "videojuego"
-                        );
-
-                videojuego.setAttribute(
-                        "codigo",
-                        String.valueOf(
-                                codigoVideojuego
-                        )
-                );
-
-                /*
-                 * Generamos datos coherentes de ejemplo.
-                 */
-                String titulo =
-                        "Videojuego "
-                                + codigoVideojuego;
-
-                String plataforma =
-                        plataformas[
-                                (codigoVideojuego - 1)
-                                        % plataformas.length
-                        ];
-
-                int anio =
-                        2015
-                                + (
-                                codigoVideojuego
-                                        % 12
-                        );
-
-                float precio =
-                        19.99f
-                                + (
-                                codigoVideojuego
-                                        % 5
-                        ) * 10;
-
-                boolean multijugador =
-                        codigoVideojuego % 2 == 0;
-
-                float valoracion =
-                        7.0f
-                                + (
-                                codigoVideojuego
-                                        % 30
-                        ) / 10.0f;
-
-                String genero =
-                        generos[
-                                (codigoVideojuego - 1)
-                                        % generos.length
-                        ];
-
-                int pegi;
-
-                switch (
-                        codigoVideojuego % 4
-                ) {
-
-                    case 0:
-                        pegi = 18;
-                        break;
-
-                    case 1:
-                        pegi = 7;
-                        break;
-
-                    case 2:
-                        pegi = 12;
-                        break;
-
-                    default:
-                        pegi = 16;
-                        break;
+                    juegos.appendChild(juego);
+                    codigoJuego++;
                 }
 
-                int ventas =
-                        100000
-                                * codigoVideojuego;
-
-                agregarElemento(
-                        doc,
-                        videojuego,
-                        "titulo",
-                        titulo
-                );
-
-                agregarElemento(
-                        doc,
-                        videojuego,
-                        "plataforma",
-                        plataforma
-                );
-
-                agregarElemento(
-                        doc,
-                        videojuego,
-                        "anio",
-                        String.valueOf(anio)
-                );
-
-                agregarElemento(
-                        doc,
-                        videojuego,
-                        "precio",
-                        String.valueOf(precio)
-                );
-
-                agregarElemento(
-                        doc,
-                        videojuego,
-                        "multijugador",
-                        multijugador ? "S" : "N"
-                );
-
-                agregarElemento(
-                        doc,
-                        videojuego,
-                        "valoracion",
-                        String.valueOf(
-                                valoracion
-                        )
-                );
-
-                agregarElemento(
-                        doc,
-                        videojuego,
-                        "genero",
-                        genero
-                );
-
-                agregarElemento(
-                        doc,
-                        videojuego,
-                        "pegi",
-                        String.valueOf(pegi)
-                );
-
-                agregarElemento(
-                        doc,
-                        videojuego,
-                        "ventas",
-                        String.valueOf(
-                                ventas
-                        )
-                );
-
-                listaVideojuegos.appendChild(
-                        videojuego
-                );
-
-                codigoVideojuego++;
+                raiz.appendChild(desarrolladora);
             }
 
-            /*
-             * Añadimos la desarrolladora
-             * completa al elemento raíz.
-             */
-            raiz.appendChild(
-                    desarrolladora
-            );
+            guardarXml(doc, new File(XML_MASIVO));
+            System.out.println(XML_MASIVO + " generado: 6 desarrolladoras y 100 videojuegos.");
+
+        } catch (Exception e) {
+            System.out.println("Error al generar XML masivo: " + e.getMessage());
+        }
+    }
+
+    // OPCIÓN 6: XPath busca elementos mediante expresiones.
+    private static void consultarConXPath(Scanner sc) {
+        if (!new File(XML_MASIVO).exists()) {
+            System.out.println("Primero genera " + XML_MASIVO + " con la opción 5.");
+            return;
         }
 
-        /*
-         * Guardamos el DOM.
-         */
-        guardarDocumentoXml(
-                doc,
-                new File(FICHERO_MASIVO)
-        );
+        try {
+            Document doc = cargarXml(XML_MASIVO);
+            XPath xpath = XPathFactory.newInstance().newXPath();
 
-        System.out.println(
-                "Fichero "
-                        + FICHERO_MASIVO
-                        + " generado correctamente."
-        );
+            System.out.println("1. Precio superior a una cantidad");
+            System.out.println("2. Videojuegos multijugador");
+            System.out.println("3. Videojuegos de una desarrolladora");
+            System.out.println("4. Expresión XPath manual");
+            System.out.print("Consulta: ");
 
-        System.out.println(
-                "Desarrolladoras creadas: 6"
-        );
+            int opcion = Integer.parseInt(sc.nextLine());
+            String expresion;
 
-        System.out.println(
-                "Videojuegos creados: 100"
-        );
+            switch (opcion) {
+                case 1 -> {
+                    System.out.print("Precio mínimo: ");
+                    float precio = Float.parseFloat(sc.nextLine().replace(',', '.'));
+                    expresion = "//videojuego[precio > " + precio + "]";
+                }
+                case 2 -> expresion = "//videojuego[multijugador='S']";
+                case 3 -> {
+                    System.out.print("Código de desarrolladora (1-6): ");
+                    String codigo = sc.nextLine();
+                    expresion = "//desarrolladora[@codigo='" + codigo + "']//videojuego";
+                }
+                case 4 -> {
+                    System.out.print("XPath: ");
+                    expresion = sc.nextLine();
+                }
+                default -> {
+                    System.out.println("Consulta no válida.");
+                    return;
+                }
+            }
 
-    } catch (Exception e) {
-
-        System.out.println(
-                "Error al generar el XML masivo: "
-                        + e.getMessage()
-        );
-    }
-}
-// ============================================================
-// OPCIÓN 6
-// CONSULTAS XPATH
-// ============================================================
-
-/*
- * Ejecuta varias consultas XPath sobre
- * videojuegos_masivo.xml.
- */
-private static void consultarConXPath(
-        Scanner scanner) {
-
-    File archivo =
-            new File(
-                    "videojuegos_masivo.xml"
+            NodeList resultados = (NodeList) xpath.evaluate(
+                    expresion, doc, XPathConstants.NODESET
             );
 
-    if (!archivo.exists()) {
-
-        System.out.println(
-                "Error: primero debes generar "
-                        + "videojuegos_masivo.xml "
-                        + "con la opción 5."
-        );
-
-        return;
-    }
-
-    try {
-
-        /*
-         * Cargamos el XML como DOM.
-         */
-        DocumentBuilderFactory factory =
-                DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder builder =
-                factory.newDocumentBuilder();
-
-        Document doc =
-                builder.parse(archivo);
-
-        doc.getDocumentElement().normalize();
-
-        /*
-         * Creamos el objeto XPath.
-         */
-        XPathFactory xpathFactory =
-                XPathFactory.newInstance();
-
-        XPath xpath =
-                xpathFactory.newXPath();
-
-        System.out.println();
-        System.out.println(
-                "========== CONSULTAS XPATH =========="
-        );
-
-        System.out.println(
-                "1.- Videojuegos con precio superior a una cantidad"
-        );
-
-        System.out.println(
-                "2.- Videojuegos con valoración igual o superior a una cantidad"
-        );
-
-        System.out.println(
-                "3.- Videojuegos multijugador"
-        );
-
-        System.out.println(
-                "4.- Videojuegos de una desarrolladora"
-        );
-
-        System.out.println(
-                "5.- Contar todos los videojuegos"
-        );
-
-        System.out.println(
-                "6.- Introducir una expresión XPath manualmente"
-        );
-
-        System.out.print(
-                "Seleccione una consulta: "
-        );
-
-        int opcion =
-                Integer.parseInt(
-                        scanner.nextLine().trim()
-                );
-
-        String expresion;
-
-        switch (opcion) {
-
-            case 1:
-
-                System.out.print(
-                        "Precio mínimo: "
-                );
-
-                float precio =
-                        Float.parseFloat(
-                                scanner.nextLine()
-                                        .trim()
-                                        .replace(',', '.')
-                        );
-
-                expresion =
-                        "//videojuego[precio > "
-                                + precio
-                                + "]";
-
-                mostrarResultadoXPath(
-                        xpath,
-                        doc,
-                        expresion
-                );
-
-                break;
-
-            case 2:
-
-                System.out.print(
-                        "Valoración mínima: "
-                );
-
-                float valoracion =
-                        Float.parseFloat(
-                                scanner.nextLine()
-                                        .trim()
-                                        .replace(',', '.')
-                        );
-
-                expresion =
-                        "//videojuego[valoracion >= "
-                                + valoracion
-                                + "]";
-
-                mostrarResultadoXPath(
-                        xpath,
-                        doc,
-                        expresion
-                );
-
-                break;
-
-            case 3:
-
-                expresion =
-                        "//videojuego[multijugador='S']";
-
-                mostrarResultadoXPath(
-                        xpath,
-                        doc,
-                        expresion
-                );
-
-                break;
-
-            case 4:
-
-                System.out.print(
-                        "Código de desarrolladora (1-6): "
-                );
-
-                String codigo =
-                        scanner.nextLine().trim();
-
-                /*
-                 * Buscamos videojuegos que cuelgan
-                 * de la desarrolladora indicada.
-                 */
-                expresion =
-                        "//desarrolladora[@codigo='"
-                                + codigo
-                                + "']//videojuego";
-
-                mostrarResultadoXPath(
-                        xpath,
-                        doc,
-                        expresion
-                );
-
-                break;
-
-            case 5:
-
-                /*
-                 * count() devuelve un NUMBER,
-                 * no un conjunto de nodos.
-                 */
-                Double total =
-                        (Double) xpath.evaluate(
-                                "count(//videojuego)",
-                                doc,
-                                XPathConstants.NUMBER
-                        );
-
-                System.out.println(
-                        "Total de videojuegos: "
-                                + total.intValue()
-                );
-
-                break;
-
-            case 6:
-
-                System.out.println(
-                        "Ejemplos:"
-                );
-
-                System.out.println(
-                        "//videojuego[precio > 40]"
-                );
-
-                System.out.println(
-                        "//videojuego[valoracion >= 9]"
-                );
-
-                System.out.println(
-                        "//videojuego[multijugador='S']/titulo"
-                );
-
-                System.out.println();
-
-                System.out.print(
-                        "Introduce la expresión XPath: "
-                );
-
-                expresion =
-                        scanner.nextLine();
-
-                mostrarResultadoXPath(
-                        xpath,
-                        doc,
-                        expresion
-                );
-
-                break;
-
-            default:
-
-                System.out.println(
-                        "Consulta no válida."
-                );
-        }
-
-    } catch (NumberFormatException e) {
-
-        System.out.println(
-                "Error: dato numérico no válido."
-        );
-
-    } catch (Exception e) {
-
-        System.out.println(
-                "Error al realizar la consulta XPath: "
-                        + e.getMessage()
-        );
-    }
-}
-/*
- * Ejecuta una expresión XPath que devuelve nodos
- * y muestra los resultados.
- */
-private static void mostrarResultadoXPath(
-        XPath xpath,
-        Document doc,
-        String expresion) throws Exception {
-
-    System.out.println();
-    System.out.println(
-            "XPath ejecutado:"
-    );
-
-    System.out.println(
-            expresion
-    );
-
-    NodeList resultados =
-            (NodeList) xpath.evaluate(
-                    expresion,
-                    doc,
-                    XPathConstants.NODESET
-            );
-
-    System.out.println(
-            "Resultados encontrados: "
-                    + resultados.getLength()
-    );
-
-    for (
-            int i = 0;
-            i < resultados.getLength();
-            i++
-    ) {
-
-        Node nodo =
-                resultados.item(i);
-
-        /*
-         * Si el resultado es un <videojuego>,
-         * mostramos código y título.
-         */
-        if (
-                nodo.getNodeType()
-                        == Node.ELEMENT_NODE
-                &&
-                nodo.getNodeName()
-                        .equals("videojuego")
-        ) {
-
-            Element videojuego =
-                    (Element) nodo;
-
-            String codigo =
-                    videojuego.getAttribute(
-                            "codigo"
+            System.out.println("Resultados: " + resultados.getLength());
+
+            for (int i = 0; i < resultados.getLength(); i++) {
+                Node nodo = resultados.item(i);
+
+                if (nodo.getNodeType() == Node.ELEMENT_NODE
+                        && nodo.getNodeName().equals("videojuego")) {
+
+                    Element juego = (Element) nodo;
+                    System.out.println(
+                            juego.getAttribute("codigo") + " - "
+                            + texto(juego, "titulo") + " - "
+                            + texto(juego, "precio") + " €"
                     );
+                } else {
+                    System.out.println(nodo.getTextContent());
+                }
+            }
 
-            String titulo =
-                    videojuego
-                            .getElementsByTagName(
-                                    "titulo"
-                            )
-                            .item(0)
-                            .getTextContent();
-
-            String precio =
-                    videojuego
-                            .getElementsByTagName(
-                                    "precio"
-                            )
-                            .item(0)
-                            .getTextContent();
-
-            String valoracion =
-                    videojuego
-                            .getElementsByTagName(
-                                    "valoracion"
-                            )
-                            .item(0)
-                            .getTextContent();
-
-            System.out.println(
-                    codigo
-                            + " - "
-                            + titulo
-                            + " | Precio: "
-                            + precio
-                            + " EUR"
-                            + " | Valoración: "
-                            + valoracion
-            );
-
-        } else {
-
-            /*
-             * Por ejemplo si la consulta devuelve:
-             *
-             * /titulo
-             */
-            System.out.println(
-                    nodo.getTextContent()
-            );
+        } catch (Exception e) {
+            System.out.println("Error XPath: " + e.getMessage());
         }
     }
-}
-// ============================================================
-// OPCIÓN 7
-// GENERAR HTML MEDIANTE XSLT
-// ============================================================
 
-private static void generarHtmlConXslt() {
+    // OPCIÓN 7: XML + XSLT -> HTML.
+    private static void generarHtmlConXslt() {
+        if (!new File(XML_MASIVO).exists()) {
+            System.out.println("Primero genera " + XML_MASIVO + " con la opción 5.");
+            return;
+        }
 
-    File xml =
-            new File(
-                    "videojuegos_masivo.xml"
+        if (!new File(XSL).exists()) {
+            System.out.println("No existe " + XSL + ".");
+            return;
+        }
+
+        try {
+            Transformer transformer = TransformerFactory.newInstance()
+                    .newTransformer(new StreamSource(XSL));
+
+            transformer.transform(
+                    new StreamSource(XML_MASIVO),
+                    new StreamResult(HTML)
             );
 
-    File xsl =
-            new File(
-                    "videojuegos.xsl"
-            );
+            System.out.println(HTML + " generado mediante XSLT.");
 
-    if (!xml.exists()) {
-
-        System.out.println(
-                "Error: primero debes generar "
-                        + "videojuegos_masivo.xml "
-                        + "con la opción 5."
-        );
-
-        return;
+        } catch (Exception e) {
+            System.out.println("Error XSLT: " + e.getMessage());
+        }
     }
 
-    if (!xsl.exists()) {
-
-        System.out.println(
-                "Error: no existe videojuegos.xsl."
-        );
-
-        return;
+    // newDocument() crea un XML nuevo en memoria.
+    private static Document nuevoDocumento() throws Exception {
+        DocumentBuilder builder =
+                DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        return builder.newDocument();
     }
 
-    try {
+    // parse() carga un XML existente como árbol DOM en memoria.
+    private static Document cargarXml(String nombre) throws Exception {
+        DocumentBuilder builder =
+                DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
-        /*
-         * TransformerFactory cargará
-         * nuestra hoja XSLT.
-         */
-        TransformerFactory factory =
-                TransformerFactory.newInstance();
-
-        Transformer transformer =
-                factory.newTransformer(
-                        new javax.xml.transform.stream.StreamSource(
-                                xsl
-                        )
-                );
-
-        /*
-         * XML de entrada.
-         */
-        javax.xml.transform.stream.StreamSource source =
-                new javax.xml.transform.stream.StreamSource(
-                        xml
-                );
-
-        /*
-         * HTML que queremos generar.
-         */
-        StreamResult result =
-                new StreamResult(
-                        new File(
-                                "videojuegos.html"
-                        )
-                );
-
-        /*
-         * Aplicamos la transformación XSLT.
-         */
-        transformer.transform(
-                source,
-                result
-        );
-
-        System.out.println(
-                "Fichero videojuegos.html "
-                        + "generado correctamente mediante XSLT."
-        );
-
-    } catch (Exception e) {
-
-        System.out.println(
-                "Error durante la transformación XSLT: "
-                        + e.getMessage()
-        );
+        Document doc = builder.parse(new File(nombre));
+        doc.getDocumentElement().normalize();
+        return doc;
     }
-}
-    // ============================================================
-    // MÉTODOS AUXILIARES
-    // ============================================================
 
-    /*
-     * Crea un elemento XML con texto.
-     *
-     * Ejemplo:
-     *
-     * nombre = "titulo"
-     * valor = "Minecraft"
-     *
-     * Resultado:
-     *
-     * <titulo>Minecraft</titulo>
-     */
+    private static Element buscarJuegoPorCodigo(Document doc, String codigo) {
+        NodeList lista = doc.getElementsByTagName("videojuego");
+
+        for (int i = 0; i < lista.getLength(); i++) {
+            Element juego = (Element) lista.item(i);
+            if (juego.getAttribute("codigo").equals(codigo)) {
+                return juego;
+            }
+        }
+
+        return null;
+    }
+
+    private static String texto(Element padre, String etiqueta) {
+        return padre.getElementsByTagName(etiqueta).item(0).getTextContent();
+    }
+
     private static void agregarElemento(
-            Document doc,
-            Element padre,
-            String nombre,
-            String valor) {
+            Document doc, Element padre, String nombre, String valor) {
 
-        Element elemento =
-                doc.createElement(nombre);
-
-        elemento.appendChild(
-                doc.createTextNode(valor)
-        );
-
+        Element elemento = doc.createElement(nombre);
+        elemento.setTextContent(valor);
         padre.appendChild(elemento);
     }
 
+    private static String leerCadena(
+            RandomAccessFile raf, int longitud) throws IOException {
 
-    /*
-     * Lee una cadena de longitud fija
-     * desde RandomAccessFile.
-     */
-    private static String leerCadenaFija(
-            RandomAccessFile raf,
-            int longitud) throws IOException {
-
-        char[] caracteres =
-                new char[longitud];
-
-        for (
-                int i = 0;
-                i < longitud;
-                i++
-        ) {
-
-            caracteres[i] =
-                    raf.readChar();
+        String texto = "";
+        for (int i = 0; i < longitud; i++) {
+            texto += raf.readChar();
         }
-
-        return new String(
-                caracteres
-        ).trim();
+        return texto.trim();
     }
 
-
-    /*
-     * Guarda un árbol DOM en un fichero XML.
-     *
-     * Utilizamos este mismo método para:
-     *
-     * - Crear videojuegos.xml.
-     * - Modificar un precio.
-     * - Eliminar un videojuego.
-     */
-    private static void guardarDocumentoXml(
-            Document doc,
-            File archivo) throws Exception {
-
-        TransformerFactory transformerFactory =
-                TransformerFactory.newInstance();
-
+    // Transformer convierte el árbol DOM en un fichero XML físico.
+    private static void guardarXml(Document doc, File archivo) throws Exception {
         Transformer transformer =
-                transformerFactory.newTransformer();
+                TransformerFactory.newInstance().newTransformer();
 
-        /*
-         * Formateamos el fichero XML.
-         */
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         transformer.setOutputProperty(
-                OutputKeys.INDENT,
-                "yes"
+                "{http://xml.apache.org/xslt}indent-amount", "4"
         );
-
-        transformer.setOutputProperty(
-                OutputKeys.ENCODING,
-                "UTF-8"
-        );
-
-        transformer.setOutputProperty(
-                "{http://xml.apache.org/xslt}indent-amount",
-                "4"
-        );
-
-        DOMSource source =
-                new DOMSource(doc);
-
-        StreamResult result =
-                new StreamResult(archivo);
 
         transformer.transform(
-                source,
-                result
+                new DOMSource(doc),
+                new StreamResult(archivo)
         );
     }
 }
