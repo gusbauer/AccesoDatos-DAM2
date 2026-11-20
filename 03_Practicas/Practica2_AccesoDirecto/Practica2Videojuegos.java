@@ -1,196 +1,293 @@
-import java.io.IOException;          // Excepción para errores de lectura/escritura
-import java.io.RandomAccessFile;     // Permite leer y escribir en cualquier posición del fichero
-import java.util.Scanner;            // Permite pedir datos al usuario por teclado
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Scanner;
 
 /*
+ * ============================================================
  * PRÁCTICA Nº2 - ACCESO A DATOS
- * Mantenimiento de un fichero binario de acceso directo.
+ * FICHERO BINARIO DE ACCESO DIRECTO
+ * ============================================================
  *
  * Fichero utilizado: videojuegos.dat
  *
- * Cada registro representa un videojuego y tiene un tamaño fijo:
+ * COMPILAR:
+ * javac Practica2Videojuegos.java
  *
- * - Código        -> int      -> 4 bytes
- * - Título        -> 35 char  -> 70 bytes
- * - Plataforma    -> 15 char  -> 30 bytes
- * - Año           -> short    -> 2 bytes
- * - Precio        -> float    -> 4 bytes
- * - Multijugador  -> boolean  -> 1 byte
- * - Valoración    -> float    -> 4 bytes
+ * EJECUTAR:
+ * java Practica2Videojuegos
+ *
+ * ============================================================
+ * CLASES UTILIZADAS
+ * ============================================================
+ *
+ * RandomAccessFile:
+ * Clase principal de esta práctica.
+ * Permite leer, escribir y mover el puntero a una posición
+ * concreta del fichero mediante seek().
+ *
+ * Scanner:
+ * Se utiliza para leer datos introducidos por teclado.
+ *
+ * IOException:
+ * Excepción utilizada para controlar errores de entrada/salida.
+ *
+ * IMPORTANTE:
+ *
+ * RandomAccessFile -> es la CLASE.
+ * raf              -> es una VARIABLE que referencia al objeto.
+ *
+ * Ejemplo:
+ *
+ * RandomAccessFile raf = new RandomAccessFile(FICHERO, "rw");
+ *
+ * ============================================================
+ * TIPO DE FICHERO
+ * ============================================================
+ *
+ * videojuegos.dat es un fichero BINARIO.
+ *
+ * Los datos se escriben mediante:
+ * writeInt(), writeChar(), writeFloat()
+ *
+ * y se leen mediante:
+ * readInt(), readChar(), readFloat()
+ *
+ * Es de ACCESO DIRECTO porque todos los registros ocupan
+ * exactamente el mismo número de bytes y podemos calcular
+ * directamente la posición de un registro.
+ *
+ * También hay operaciones de ACCESO SECUENCIAL, como:
+ * - mostrar todos los videojuegos;
+ * - buscar todos los videojuegos de una plataforma.
+ *
+ * ============================================================
+ * CREACIÓN DEL FICHERO
+ * ============================================================
+ *
+ * Se abre así:
+ *
+ * new RandomAccessFile(FICHERO, "rw")
+ *
+ * "r"  -> solo lectura.
+ * "rw" -> lectura y escritura.
+ *
+ * Si el fichero no existe y se abre con "rw",
+ * RandomAccessFile lo crea.
+ *
+ * Después los registros se escriben utilizando los métodos
+ * writeInt(), writeChar() y writeFloat().
+ *
+ * ============================================================
+ * ESTRUCTURA DE UN REGISTRO
+ * ============================================================
+ *
+ * Código      -> int      -> 4 bytes
+ * Título      -> 30 char  -> 60 bytes
+ * Plataforma  -> 15 char  -> 30 bytes
+ * Año         -> int      -> 4 bytes
+ * Precio      -> float    -> 4 bytes
  *
  * TOTAL:
- * 4 + 70 + 30 + 2 + 4 + 1 + 4 = 115 bytes por registro.
  *
- * Todos los registros deben ocupar exactamente lo mismo.
- * Gracias a esto podemos acceder directamente a cualquier registro:
+ * 4 + 60 + 30 + 4 + 4 = 102 bytes.
  *
- * posicion = (codigo - 1) * TAMANO_REGISTRO
+ * Cada char ocupa 2 bytes.
  *
- * Para eliminar un videojuego utilizamos borrado lógico:
- * no se elimina físicamente el registro del fichero, sino que
- * se cambia su código por -1.
+ * Todos los registros tienen tamaño fijo para poder realizar
+ * acceso directo.
+ *
+ * ============================================================
+ * ACCESO DIRECTO
+ * ============================================================
+ *
+ * Para buscar un videojuego por código:
+ *
+ * posicion = (codigo - 1) * TAM_REGISTRO
+ *
+ * Ejemplo:
+ *
+ * código 5:
+ * (5 - 1) * 102 = 408
+ *
+ * Después:
+ *
+ * raf.seek(408);
+ *
+ * seek() mueve el puntero directamente a esa posición.
+ *
+ * ============================================================
+ * ACCESO SECUENCIAL
+ * ============================================================
+ *
+ * Para recorrer todos los registros:
+ *
+ * while (raf.getFilePointer() < raf.length())
+ *
+ * getFilePointer() -> posición actual del puntero.
+ * length()         -> tamaño total del fichero.
+ *
+ * ============================================================
+ * OPERACIONES BÁSICAS
+ * ============================================================
+ *
+ * 1. CREAR / AÑADIR
+ *
+ * raf.seek(raf.length());
+ *
+ * Nos colocamos al final y escribimos el nuevo registro.
+ *
+ *
+ * 2. LEER
+ *
+ * raf.readInt();
+ * raf.readChar();
+ * raf.readFloat();
+ *
+ *
+ * 3. ACTUALIZAR
+ *
+ * Calculamos la posición del registro con el código,
+ * hacemos seek() y sobrescribimos solamente el dato.
+ *
+ *
+ * 4. ELIMINAR
+ *
+ * Se utiliza BORRADO LÓGICO.
+ *
+ * raf.seek(posicion);
+ * raf.writeInt(-1);
+ *
+ * No eliminamos físicamente los 102 bytes.
+ * Marcamos el registro con código -1.
+ *
+ * ============================================================
+ * MODIFICACIÓN DEL PRECIO
+ * ============================================================
+ *
+ * Antes del precio tenemos:
+ *
+ * Código      -> 4 bytes
+ * Título      -> 60 bytes
+ * Plataforma  -> 30 bytes
+ * Año         -> 4 bytes
+ *
+ * TOTAL = 98 bytes.
+ *
+ * Por eso:
+ *
+ * raf.seek(posicion + 98);
+ * raf.writeFloat(nuevoPrecio);
+ *
+ * Así modificamos solamente los 4 bytes del precio.
+ *
+ * ============================================================
+ * DE DÓNDE SALEN LOS DATOS
+ * ============================================================
+ *
+ * Opción 1:
+ * Los 15 videojuegos iniciales salen de arrays definidos
+ * dentro del programa.
+ *
+ * Opción 2:
+ * Los datos los introduce el usuario mediante Scanner.
+ *
+ * ============================================================
  */
 
 public class Practica2Videojuegos {
 
-    // Nombre del fichero binario donde se guardarán los videojuegos.
-    private static final String NOMBRE_FICHERO = "videojuegos.dat";
+    /*  Son atributos constantes de la clase. private significa que solo se utilizan dentro de esta clase, static que pertenecen a la clase y no a un objeto concreto, y final que su valor no cambia.
 
-    /*
-     * Las cadenas tienen una longitud fija porque los registros
-     * también deben tener siempre un tamaño fijo.
-     */
-    private static final int LONGITUD_TITULO = 35;
-    private static final int LONGITUD_PLATAFORMA = 15;
+    Y qué representa cada uno:
+    FICHERO            nombre del fichero
+    LONG_TITULO        longitud fija del título
+    LONG_PLATAFORMA    longitud fija de plataforma
+    TAM_REGISTRO       102 bytes por videojuego
+    POS_PRECIO         desplazamiento de 98 bytes hasta el precio */
+    // Nombre del fichero binario.
+    private static final String FICHERO = "videojuegos.dat";
 
-    // Tamaño total, en bytes, que ocupa cada videojuego.
-    private static final int TAMANO_REGISTRO = 115;
+    // Longitud fija de las cadenas para que todos los registros
+    // tengan exactamente el mismo tamaño.
+    private static final int LONG_TITULO = 30;
+    private static final int LONG_PLATAFORMA = 15;
 
-    /*
-     * Desplazamiento del campo precio dentro de cada registro.
-     *
-     * Antes del precio tenemos:
-     *
-     * Código      = 4 bytes
-     * Título      = 70 bytes
-     * Plataforma  = 30 bytes
-     * Año         = 2 bytes
-     *
-     * 4 + 70 + 30 + 2 = 106 bytes
-     *
-     * Por tanto:
-     * posicionPrecio = posicionRegistro + 106
-     */
-    private static final int DESPLAZAMIENTO_PRECIO = 106;
+    // Cada videojuego ocupa exactamente 102 bytes.
+    private static final int TAM_REGISTRO = 102;
+
+    // El precio comienza 98 bytes después del inicio del registro.
+    private static final int POS_PRECIO = 98;
 
     public static void main(String[] args) {
 
-        // Scanner se utiliza para leer las opciones y datos introducidos por teclado.
-        Scanner scanner = new Scanner(System.in);
-
-        // Inicializamos la opción para poder controlar posteriormente el bucle.
+        Scanner sc = new Scanner(System.in);
         int opcion = 0;
 
-        /*
-         * El menú se repite mientras el usuario no seleccione
-         * la opción 8 (Salir).
-         */
         do {
-
             mostrarMenu();
 
             try {
+                opcion = Integer.parseInt(sc.nextLine());
 
-                /*
-                 * nextLine() recoge lo introducido como String.
-                 * trim() elimina espacios al principio y al final.
-                 * parseInt() convierte el String a int.
-                 */
-                opcion = Integer.parseInt(scanner.nextLine().trim());
-
-                // Ejecutamos una operación distinta según la opción elegida.
                 switch (opcion) {
-
                     case 1:
-                        anadir15Videojuegos();
+                        anadir15();
                         break;
-
                     case 2:
-                        anadirVideojuego(scanner);
+                        anadirUno(sc);
                         break;
-
                     case 3:
-                        visualizarTodos();
+                        mostrarTodos();
                         break;
-
                     case 4:
-                        visualizarPorCodigo(scanner);
+                        buscarPorCodigo(sc);
                         break;
-
                     case 5:
-                        visualizarPorPlataforma(scanner);
+                        buscarPorPlataforma(sc);
                         break;
-
                     case 6:
-                        modificarPrecio(scanner);
+                        modificarPrecio(sc);
                         break;
-
                     case 7:
-                        eliminarVideojuego(scanner);
+                        eliminar(sc);
                         break;
-
                     case 8:
                         System.out.println("Programa finalizado.");
                         break;
-
                     default:
                         System.out.println("Opción no válida.");
                 }
 
             } catch (NumberFormatException e) {
-
-                /*
-                 * Se produce si el usuario escribe algo que
-                 * no puede convertirse en número.
-                 */
-                System.out.println(
-                        "Error: debes introducir un número válido."
-                );
+                System.out.println("Debes introducir un número.");
             }
 
             System.out.println();
 
         } while (opcion != 8);
 
-        // Cerramos el Scanner cuando ya no se va a utilizar.
-        scanner.close();
+        sc.close();
     }
 
-    /*
-     * Muestra el menú principal.
-     *
-     * Se separa en un método para no llenar el main()
-     * de instrucciones de impresión.
-     */
     private static void mostrarMenu() {
-
-        System.out.println("==============================================");
-        System.out.println("       GESTIÓN DE VIDEOJUEGOS");
-        System.out.println("==============================================");
-        System.out.println("1.- Añadir 15 videojuegos al fichero.");
-        System.out.println("2.- Añadir un videojuego al final.");
-        System.out.println("3.- Visualizar todos los videojuegos.");
-        System.out.println("4.- Visualizar un videojuego por código.");
-        System.out.println("5.- Visualizar videojuegos por plataforma.");
-        System.out.println("6.- Modificar el precio de un videojuego.");
-        System.out.println("7.- Eliminar un videojuego.");
-        System.out.println("8.- Salir.");
-        System.out.print("Elige una opción: ");
+        System.out.println("===== GESTIÓN DE VIDEOJUEGOS =====");
+        System.out.println("1. Añadir 15 videojuegos");
+        System.out.println("2. Añadir un videojuego");
+        System.out.println("3. Mostrar todos");
+        System.out.println("4. Buscar por código");
+        System.out.println("5. Buscar por plataforma");
+        System.out.println("6. Modificar precio");
+        System.out.println("7. Eliminar videojuego");
+        System.out.println("8. Salir");
+        System.out.print("Opción: ");
     }
 
-    /*
-     * ============================================================
-     * OPCIÓN 1: AÑADIR 15 VIDEOJUEGOS
-     * ============================================================
-     *
-     * El enunciado pide utilizar arrays con datos ya generados.
-     * Cada posición de los arrays representa el mismo videojuego.
-     *
-     * Por ejemplo:
-     *
-     * titulos[0]       -> Minecraft
-     * plataformas[0]   -> PC
-     * anios[0]         -> 2011
-     * precios[0]       -> 29.99
-     *
-     * Todos esos datos pertenecen al videojuego número 0 del array.
-     */
-    private static void anadir15Videojuegos() {
+    private static void anadir15() {
 
         String[] titulos = {
                 "Minecraft",
                 "The Witcher 3",
-                "Grand Theft Auto V",
+                "GTA V",
                 "Red Dead Redemption 2",
                 "Cyberpunk 2077",
                 "God of War",
@@ -206,1116 +303,381 @@ public class Practica2Videojuegos {
         };
 
         String[] plataformas = {
-                "PC",
-                "PC",
-                "PS5",
-                "PS5",
-                "PC",
-                "PS5",
-                "PC",
-                "PC",
-                "PC",
-                "PC",
-                "Xbox",
-                "PS5",
-                "PC",
-                "PS5",
-                "PC"
+                "PC", "PC", "PS5", "PS5", "PC",
+                "PS5", "PC", "PC", "PC", "PC",
+                "Xbox", "PS5", "PC", "PS5", "PC"
         };
 
-        short[] anios = {
+        int[] anios = {
                 2011, 2015, 2013, 2018, 2020,
                 2018, 2022, 2020, 2017, 2020,
                 2021, 2023, 2023, 2018, 2016
         };
 
-        /*
-         * La f detrás del número indica que el valor
-         * debe almacenarse como float.
-         */
         float[] precios = {
                 29.99f, 39.99f, 19.99f, 59.99f, 49.99f,
                 39.99f, 59.99f, 24.99f, 14.99f, 39.99f,
                 59.99f, 49.99f, 59.99f, 49.99f, 39.99f
         };
 
-        boolean[] multijugador = {
-                true, false, true, true, false,
-                false, true, false, false, true,
-                true, false, true, false, true
-        };
+        // RandomAccessFile permite leer, escribir y movernos por el fichero.
+        // "rw" significa lectura y escritura.
+        // Si el fichero no existe, se crea. 
+        try (RandomAccessFile raf = new RandomAccessFile(FICHERO, "rw")) {
 
-        float[] valoraciones = {
-                9.5f, 9.7f, 9.4f, 9.8f, 8.8f,
-                9.3f, 9.6f, 9.1f, 9.2f, 8.9f,
-                9.0f, 9.4f, 9.7f, 9.2f, 9.3f
-        };
-
-        /*
-         * Abrimos el fichero en modo "rw":
-         *
-         * r = read  -> lectura
-         * w = write -> escritura
-         *
-         * Si videojuegos.dat no existe, RandomAccessFile lo crea.
-         *
-         * try-with-resources cerrará automáticamente el fichero
-         * cuando terminemos de utilizarlo.
-         */
-        try (RandomAccessFile raf =
-                     new RandomAccessFile(NOMBRE_FICHERO, "rw")) {
-
-            /*
-             * length() devuelve el tamaño del fichero en bytes.
-             *
-             * seek() mueve el puntero del fichero.
-             *
-             * Como queremos AÑADIR datos y no sobrescribirlos,
-             * movemos el puntero exactamente al final.
-             */
+            int siguienteCodigo = (int) (raf.length() / TAM_REGISTRO) + 1;
+            // Nos movemos al final del fichero para añadir sin sobrescribir.
             raf.seek(raf.length());
 
-            /*
-             * Calculamos el código que debe recibir el siguiente registro.
-             *
-             * Ejemplo:
-             *
-             * 1725 bytes / 115 bytes = 15 registros
-             * 15 + 1 = código 16
-             */
-            int siguienteCodigo =
-                    (int) (raf.length() / TAMANO_REGISTRO) + 1;
-
-            /*
-             * Recorremos los 15 elementos de los arrays.
-             */
             for (int i = 0; i < titulos.length; i++) {
-
-                // Cada nuevo registro recibe un código consecutivo.
-                int codigo = siguienteCodigo + i;
-
-                /*
-                 * Escribimos todos los campos del videojuego.
-                 * Se utiliza un método para evitar repetir el mismo
-                 * código de escritura.
-                 */
                 escribirRegistro(
                         raf,
-                        codigo,
+                        siguienteCodigo + i,
                         titulos[i],
                         plataformas[i],
                         anios[i],
-                        precios[i],
-                        multijugador[i],
-                        valoraciones[i]
+                        precios[i]
                 );
             }
 
-            System.out.println();
-            System.out.println("15 videojuegos añadidos correctamente.");
-
-            // Mostramos el tamaño físico final del fichero.
-            System.out.println(
-                    "Tamaño actual del fichero: "
-                            + raf.length()
-                            + " bytes."
-            );
+            System.out.println("15 videojuegos añadidos.");
 
         } catch (IOException e) {
-
-            // Captura posibles errores al trabajar con el fichero.
-            System.out.println(
-                    "Error al escribir el fichero: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al escribir el fichero.");
         }
     }
 
-    /*
-     * ============================================================
-     * OPCIÓN 2: AÑADIR UN VIDEOJUEGO
-     * ============================================================
-     *
-     * Pide los datos por teclado y añade un registro al final.
-     */
-    private static void anadirVideojuego(Scanner scanner) {
+    private static void anadirUno(Scanner sc) {
 
         try {
+            System.out.print("Título: ");
+            String titulo = sc.nextLine();
 
-            System.out.print("Introduce el título: ");
-            String titulo = scanner.nextLine();
+            System.out.print("Plataforma: ");
+            String plataforma = sc.nextLine();
 
-            System.out.print("Introduce la plataforma: ");
-            String plataforma = scanner.nextLine();
+            System.out.print("Año: ");
+            int anio = Integer.parseInt(sc.nextLine());
 
-            System.out.print("Introduce el año: ");
+            System.out.print("Precio: ");
+            float precio = Float.parseFloat(sc.nextLine().replace(',', '.'));
 
-            // Convertimos el texto introducido a short.
-            short anio =
-                    Short.parseShort(scanner.nextLine().trim());
+            // RandomAccessFile es la clase.
+            // raf es la variable que referencia al objeto.
+            // "rw" permite leer y escribir y crea el fichero si no existe.
+            try (RandomAccessFile raf = new RandomAccessFile(FICHERO, "rw")) {
 
-            System.out.print("Introduce el precio: ");
-
-            /*
-             * replace(',', '.') permite introducir:
-             *
-             * 29,99
-             *
-             * o:
-             *
-             * 29.99
-             */
-            float precio =
-                    Float.parseFloat(
-                            scanner.nextLine()
-                                    .trim()
-                                    .replace(',', '.')
-                    );
-
-            System.out.print(
-                    "¿Tiene multijugador? (S/N): "
-            );
-
-            String respuestaMultijugador =
-                    scanner.nextLine().trim();
-
-            /*
-             * equalsIgnoreCase ignora mayúsculas/minúsculas.
-             *
-             * "S", "s" -> true
-             * cualquier otra respuesta -> false
-             */
-            boolean multijugador =
-                    respuestaMultijugador.equalsIgnoreCase("S");
-
-            System.out.print(
-                    "Introduce la valoración (0-10): "
-            );
-
-            float valoracion =
-                    Float.parseFloat(
-                            scanner.nextLine()
-                                    .trim()
-                                    .replace(',', '.')
-                    );
-
-            try (RandomAccessFile raf =
-                         new RandomAccessFile(
-                                 NOMBRE_FICHERO,
-                                 "rw")) {
-
-                /*
-                 * Calculamos el código a partir del número
-                 * de registros físicos existentes.
-                 */
-                int codigo =
-                        (int) (
-                                raf.length()
-                                        / TAMANO_REGISTRO
-                        ) + 1;
-
-                // Movemos el puntero al final del fichero.
+                int codigo = (int) (raf.length() / TAM_REGISTRO) + 1;
+                // length() devuelve el tamaño del fichero.
+                // seek() mueve el puntero.
+                // Al moverlo a length() nos colocamos al final para añadir.
                 raf.seek(raf.length());
 
-                // Escribimos el nuevo registro completo.
                 escribirRegistro(
                         raf,
                         codigo,
                         titulo,
                         plataforma,
                         anio,
-                        precio,
-                        multijugador,
-                        valoracion
+                        precio
                 );
 
-                System.out.println();
-                System.out.println(
-                        "Videojuego añadido correctamente."
-                );
-
-                System.out.println(
-                        "Código asignado: " + codigo
-                );
+                System.out.println("Videojuego añadido con código " + codigo + ".");
             }
 
         } catch (NumberFormatException e) {
-
-            /*
-             * Este error se produce si, por ejemplo,
-             * introducimos texto donde se esperaba un precio o un año.
-             */
-            System.out.println(
-                    "Error: alguno de los datos numéricos no es válido."
-            );
-
+            System.out.println("Año o precio no válido.");
         } catch (IOException e) {
-
-            System.out.println(
-                    "Error al añadir el videojuego: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al escribir el fichero.");
         }
     }
 
-    /*
-     * ============================================================
-     * OPCIÓN 3: VISUALIZAR TODOS
-     * ============================================================
-     *
-     * Aquí hacemos una lectura SECUENCIAL.
-     *
-     * Empezamos al principio y recorremos uno por uno
-     * todos los registros hasta llegar al final.
-     */
-    private static void visualizarTodos() {
+    private static void mostrarTodos() {
 
-        /*
-         * "r" significa que abrimos el fichero únicamente
-         * para lectura.
-         */
-        try (RandomAccessFile raf =
-                     new RandomAccessFile(
-                             NOMBRE_FICHERO,
-                             "r")) {
+        try (RandomAccessFile raf = new RandomAccessFile(FICHERO, "r")) {
 
-            // Un fichero con longitud 0 no contiene registros.
-            if (raf.length() == 0) {
-
-                System.out.println(
-                        "El fichero está vacío."
-                );
-
-                return;
-            }
-
-            int encontrados = 0;
-
-            /*
-             * getFilePointer() devuelve la posición actual
-             * del puntero dentro del fichero.
-             *
-             * Seguimos leyendo mientras no lleguemos
-             * al final del fichero.
-             */
-            while (
-                    raf.getFilePointer()
-                            < raf.length()
-            ) {
-
-                /*
-                 * Los campos deben leerse EXACTAMENTE
-                 * en el mismo orden en que fueron escritos.
-                 */
+            // ACCESO SECUENCIAL:
+            // recorremos el fichero registro a registro hasta llegar al final.
+            while (raf.getFilePointer() < raf.length()) {
 
                 int codigo = raf.readInt();
-
-                String titulo =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_TITULO
-                        );
-
-                String plataforma =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_PLATAFORMA
-                        );
-
-                short anio = raf.readShort();
-
+                String titulo = leerCadena(raf, LONG_TITULO);
+                String plataforma = leerCadena(raf, LONG_PLATAFORMA);
+                int anio = raf.readInt();
                 float precio = raf.readFloat();
 
-                boolean multijugador =
-                        raf.readBoolean();
-
-                float valoracion =
-                        raf.readFloat();
-
-                /*
-                 * Un código -1 significa que ese registro
-                 * fue eliminado lógicamente.
-                 *
-                 * Por tanto, no lo mostramos.
-                 */
                 if (codigo != -1) {
-
-                    mostrarVideojuego(
-                            codigo,
-                            titulo,
-                            plataforma,
-                            anio,
-                            precio,
-                            multijugador,
-                            valoracion
-                    );
-
-                    encontrados++;
+                    mostrarRegistro(codigo, titulo, plataforma, anio, precio);
                 }
             }
 
-            if (encontrados == 0) {
-
-                System.out.println(
-                        "No hay videojuegos activos en el fichero."
-                );
-            }
-
         } catch (IOException e) {
-
-            System.out.println(
-                    "Error al leer el fichero: "
-                            + e.getMessage()
-            );
+            System.out.println("No se ha podido leer el fichero.");
         }
     }
 
-    /*
-     * ============================================================
-     * OPCIÓN 4: BUSCAR POR CÓDIGO
-     * ============================================================
-     *
-     * Aquí aprovechamos realmente el ACCESO DIRECTO.
-     *
-     * No recorremos todos los registros.
-     * Calculamos directamente la posición que corresponde al código.
-     */
-    private static void visualizarPorCodigo(
-            Scanner scanner) {
+    private static void buscarPorCodigo(Scanner sc) {
 
         try {
+            System.out.print("Código: ");
+            int codigoBuscado = Integer.parseInt(sc.nextLine());
 
-            System.out.print(
-                    "Introduce el código del videojuego: "
-            );
-
-            int codigoBuscado =
-                    Integer.parseInt(
-                            scanner.nextLine().trim()
-                    );
-
-            // Los códigos válidos empiezan en 1.
             if (codigoBuscado < 1) {
-
-                System.out.println(
-                        "Código no válido."
-                );
-
+                System.out.println("Código no válido.");
                 return;
             }
 
-            try (RandomAccessFile raf =
-                         new RandomAccessFile(
-                                 NOMBRE_FICHERO,
-                                 "r")) {
+            try (RandomAccessFile raf = new RandomAccessFile(FICHERO, "r")) {
 
-                /*
-                 * Fórmula fundamental del acceso directo:
-                 *
-                 * posición = (código - 1) * 115
-                 *
-                 * Ejemplo para código 5:
-                 *
-                 * (5 - 1) * 115 = 460
-                 */
-                long posicion =
-                        (long) (codigoBuscado - 1)
-                                * TAMANO_REGISTRO;
+                // ACCESO DIRECTO:
+                // como cada registro ocupa 102 bytes, calculamos directamente
+                // dónde empieza el videojuego solicitado.
+                long posicion = (long) (codigoBuscado - 1) * TAM_REGISTRO;
 
-                /*
-                 * Si esa posición está fuera del fichero,
-                 * el registro no puede existir.
-                 */
                 if (posicion >= raf.length()) {
-
-                    System.out.println(
-                            "Error: el código no existe."
-                    );
-
+                    System.out.println("El código no existe.");
                     return;
                 }
 
-                // Saltamos directamente hasta el registro.
                 raf.seek(posicion);
 
                 int codigo = raf.readInt();
 
-                // Comprobamos el borrado lógico.
                 if (codigo == -1) {
-
-                    System.out.println(
-                            "El videojuego con código "
-                                    + codigoBuscado
-                                    + " está eliminado."
-                    );
-
+                    System.out.println("El videojuego está eliminado.");
                     return;
                 }
 
-                /*
-                 * Una vez encontrados los primeros 4 bytes
-                 * del código, leemos el resto del registro.
-                 */
-                String titulo =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_TITULO
-                        );
-
-                String plataforma =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_PLATAFORMA
-                        );
-
-                short anio = raf.readShort();
+                String titulo = leerCadena(raf, LONG_TITULO);
+                String plataforma = leerCadena(raf, LONG_PLATAFORMA);
+                int anio = raf.readInt();
                 float precio = raf.readFloat();
 
-                boolean multijugador =
-                        raf.readBoolean();
-
-                float valoracion =
-                        raf.readFloat();
-
-                mostrarVideojuego(
-                        codigo,
-                        titulo,
-                        plataforma,
-                        anio,
-                        precio,
-                        multijugador,
-                        valoracion
-                );
+                mostrarRegistro(codigo, titulo, plataforma, anio, precio);
             }
 
         } catch (NumberFormatException e) {
-
-            System.out.println(
-                    "Error: debes introducir un código numérico."
-            );
-
+            System.out.println("Código no válido.");
         } catch (IOException e) {
-
-            System.out.println(
-                    "Error al consultar el fichero: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al leer el fichero.");
         }
     }
 
-    /*
-     * ============================================================
-     * OPCIÓN 5: BUSCAR POR PLATAFORMA
-     * ============================================================
-     *
-     * Aquí no conocemos directamente la posición de los registros
-     * que tienen una determinada plataforma.
-     *
-     * Por eso tenemos que recorrer todo el fichero secuencialmente.
-     */
-    private static void visualizarPorPlataforma(
-            Scanner scanner) {
+    private static void buscarPorPlataforma(Scanner sc) {
 
-        System.out.print(
-                "Introduce la plataforma a buscar: "
-        );
+        System.out.print("Plataforma: ");
+        String plataformaBuscada = sc.nextLine();
 
-        String plataformaBuscada =
-                scanner.nextLine().trim();
+        boolean encontrado = false;
 
-        try (RandomAccessFile raf =
-                     new RandomAccessFile(
-                             NOMBRE_FICHERO,
-                             "r")) {
+        try (RandomAccessFile raf = new RandomAccessFile(FICHERO, "r")) {
 
-            int encontrados = 0;
 
-            while (
-                    raf.getFilePointer()
-                            < raf.length()
-            ) {
+            // ACCESO SECUENCIAL:
+            // recorremos todos los registros desde el principio hasta el final.
+            while (raf.getFilePointer() < raf.length()) {
 
                 int codigo = raf.readInt();
-
-                String titulo =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_TITULO
-                        );
-
-                String plataforma =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_PLATAFORMA
-                        );
-
-                short anio = raf.readShort();
+                String titulo = leerCadena(raf, LONG_TITULO);
+                String plataforma = leerCadena(raf, LONG_PLATAFORMA);
+                int anio = raf.readInt();
                 float precio = raf.readFloat();
 
-                boolean multijugador =
-                        raf.readBoolean();
+                if (codigo != -1
+                        && plataforma.equalsIgnoreCase(plataformaBuscada)) {
 
-                float valoracion =
-                        raf.readFloat();
-
-                /*
-                 * El videojuego se muestra únicamente si:
-                 *
-                 * 1. No está borrado.
-                 * 2. Su plataforma coincide con la buscada.
-                 */
-                if (
-                        codigo != -1
-                                &&
-                        plataforma.equalsIgnoreCase(
-                                plataformaBuscada
-                        )
-                ) {
-
-                    mostrarVideojuego(
-                            codigo,
-                            titulo,
-                            plataforma,
-                            anio,
-                            precio,
-                            multijugador,
-                            valoracion
-                    );
-
-                    encontrados++;
+                    mostrarRegistro(codigo, titulo, plataforma, anio, precio);
+                    encontrado = true;
                 }
             }
 
-            if (encontrados == 0) {
-
-                System.out.println(
-                        "No se han encontrado videojuegos "
-                                + "para la plataforma "
-                                + plataformaBuscada
-                                + "."
-                );
+            if (!encontrado) {
+                System.out.println("No hay videojuegos de esa plataforma.");
             }
 
         } catch (IOException e) {
-
-            System.out.println(
-                    "Error al consultar el fichero: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al leer el fichero.");
         }
     }
 
-    /*
-     * ============================================================
-     * OPCIÓN 6: MODIFICAR PRECIO
-     * ============================================================
-     *
-     * Modificamos únicamente los 4 bytes correspondientes
-     * al precio.
-     *
-     * No es necesario volver a escribir todo el registro.
-     */
-    private static void modificarPrecio(
-            Scanner scanner) {
+    private static void modificarPrecio(Scanner sc) {
 
         try {
-
-            System.out.print(
-                    "Introduce el código del videojuego: "
-            );
-
-            int codigoBuscado =
-                    Integer.parseInt(
-                            scanner.nextLine().trim()
-                    );
+            System.out.print("Código: ");
+            int codigoBuscado = Integer.parseInt(sc.nextLine());
 
             if (codigoBuscado < 1) {
-
-                System.out.println(
-                        "Código no válido."
-                );
-
+                System.out.println("Código no válido.");
                 return;
             }
 
-            try (RandomAccessFile raf =
-                         new RandomAccessFile(
-                                 NOMBRE_FICHERO,
-                                 "rw")) {
+            try (RandomAccessFile raf = new RandomAccessFile(FICHERO, "rw")) {
 
-                /*
-                 * Primero calculamos dónde empieza
-                 * el registro completo.
-                 */
-                long posicionRegistro =
-                        (long) (codigoBuscado - 1)
-                                * TAMANO_REGISTRO;
+                long posicion = (long) (codigoBuscado - 1) * TAM_REGISTRO;
 
-                if (
-                        posicionRegistro
-                                >= raf.length()
-                ) {
-
-                    System.out.println(
-                            "Error: el código no existe."
-                    );
-
+                if (posicion >= raf.length()) {
+                    System.out.println("El código no existe.");
                     return;
                 }
 
-                // Saltamos al comienzo del registro.
-                raf.seek(posicionRegistro);
+                raf.seek(posicion);
 
                 int codigo = raf.readInt();
 
                 if (codigo == -1) {
-
-                    System.out.println(
-                            "El videojuego está eliminado."
-                    );
-
+                    System.out.println("El videojuego está eliminado.");
                     return;
                 }
 
-                /*
-                 * Leemos los datos actuales para mostrarlos
-                 * antes de realizar la modificación.
-                 */
-                String titulo =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_TITULO
-                        );
+                String titulo = leerCadena(raf, LONG_TITULO);
+                String plataforma = leerCadena(raf, LONG_PLATAFORMA);
+                int anio = raf.readInt();
+                float precioActual = raf.readFloat();
 
-                String plataforma =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_PLATAFORMA
-                        );
-
-                short anio = raf.readShort();
-
-                float precioActual =
-                        raf.readFloat();
-
-                boolean multijugador =
-                        raf.readBoolean();
-
-                float valoracion =
-                        raf.readFloat();
-
-                mostrarVideojuego(
+                mostrarRegistro(
                         codigo,
                         titulo,
                         plataforma,
                         anio,
-                        precioActual,
-                        multijugador,
-                        valoracion
+                        precioActual
                 );
 
-                System.out.print(
-                        "Introduce el nuevo precio: "
-                );
-
+                System.out.print("Nuevo precio: ");
                 float nuevoPrecio =
-                        Float.parseFloat(
-                                scanner.nextLine()
-                                        .trim()
-                                        .replace(',', '.')
-                        );
+                        Float.parseFloat(sc.nextLine().replace(',', '.'));
 
-                /*
-                 * Posición exacta del precio:
-                 *
-                 * inicio del registro + 106 bytes
-                 *
-                 * De esta forma sobrescribimos únicamente
-                 * los 4 bytes del float precio.
-                 */
-                raf.seek(
-                        posicionRegistro
-                                + DESPLAZAMIENTO_PRECIO
-                );
-
+                // nos situamos directamente sobre el campo precio
+                // y sobrescribimos únicamente esos 4 bytes.
+                raf.seek(posicion + POS_PRECIO);
                 raf.writeFloat(nuevoPrecio);
 
-                System.out.println(
-                        "Precio modificado correctamente."
-                );
+                System.out.println("Precio modificado.");
             }
 
         } catch (NumberFormatException e) {
-
-            System.out.println(
-                    "Error: dato numérico no válido."
-            );
-
+            System.out.println("Dato no válido.");
         } catch (IOException e) {
-
-            System.out.println(
-                    "Error al modificar el fichero: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al modificar el fichero.");
         }
     }
 
-    /*
-     * ============================================================
-     * OPCIÓN 7: ELIMINAR VIDEOJUEGO
-     * ============================================================
-     *
-     * Realizamos un BORRADO LÓGICO.
-     *
-     * No eliminamos físicamente los 115 bytes.
-     * Solamente sustituimos el código por -1.
-     */
-    private static void eliminarVideojuego(
-            Scanner scanner) {
+    private static void eliminar(Scanner sc) {
 
         try {
-
-            System.out.print(
-                    "Introduce el código del videojuego "
-                            + "que quieres eliminar: "
-            );
-
-            int codigoBuscado =
-                    Integer.parseInt(
-                            scanner.nextLine().trim()
-                    );
+            System.out.print("Código: ");
+            int codigoBuscado = Integer.parseInt(sc.nextLine());
 
             if (codigoBuscado < 1) {
-
-                System.out.println(
-                        "Código no válido."
-                );
-
+                System.out.println("Código no válido.");
                 return;
             }
 
-            try (RandomAccessFile raf =
-                         new RandomAccessFile(
-                                 NOMBRE_FICHERO,
-                                 "rw")) {
+            try (RandomAccessFile raf = new RandomAccessFile(FICHERO, "rw")) {
 
-                // Calculamos directamente dónde comienza.
-                long posicionRegistro =
-                        (long) (codigoBuscado - 1)
-                                * TAMANO_REGISTRO;
+                long posicion = (long) (codigoBuscado - 1) * TAM_REGISTRO;
 
-                if (
-                        posicionRegistro
-                                >= raf.length()
-                ) {
-
-                    System.out.println(
-                            "Error: el código no existe."
-                    );
-
+                if (posicion >= raf.length()) {
+                    System.out.println("El código no existe.");
                     return;
                 }
 
-                raf.seek(posicionRegistro);
+                // BORRADO LÓGICO:
+                // no borramos físicamente el registro.
+                // Marcamos su código como -1.
+                raf.seek(posicion);
 
                 int codigo = raf.readInt();
 
-                // Evitamos eliminar dos veces el mismo registro.
                 if (codigo == -1) {
-
-                    System.out.println(
-                            "El videojuego ya estaba eliminado."
-                    );
-
+                    System.out.println("El videojuego ya está eliminado.");
                     return;
                 }
 
-                /*
-                 * Leemos el resto del registro para mostrárselo
-                 * al usuario antes de confirmar el borrado.
-                 */
-                String titulo =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_TITULO
-                        );
-
-                String plataforma =
-                        leerCadenaFija(
-                                raf,
-                                LONGITUD_PLATAFORMA
-                        );
-
-                short anio = raf.readShort();
+                String titulo = leerCadena(raf, LONG_TITULO);
+                String plataforma = leerCadena(raf, LONG_PLATAFORMA);
+                int anio = raf.readInt();
                 float precio = raf.readFloat();
 
-                boolean multijugador =
-                        raf.readBoolean();
+                mostrarRegistro(codigo, titulo, plataforma, anio, precio);
 
-                float valoracion =
-                        raf.readFloat();
+                System.out.print("¿Quieres eliminarlo? (S/N): ");
+                String respuesta = sc.nextLine();
 
-                mostrarVideojuego(
-                        codigo,
-                        titulo,
-                        plataforma,
-                        anio,
-                        precio,
-                        multijugador,
-                        valoracion
-                );
+                if (respuesta.equalsIgnoreCase("S")) {
 
-                System.out.print(
-                        "¿Seguro que deseas eliminarlo? (S/N): "
-                );
-
-                String respuesta =
-                        scanner.nextLine().trim();
-
-                if (
-                        respuesta.equalsIgnoreCase("S")
-                ) {
-
-                    /*
-                     * Después de haber leído el registro,
-                     * el puntero está al final.
-                     *
-                     * Volvemos al comienzo del registro.
-                     */
-                    raf.seek(posicionRegistro);
-
-                    /*
-                     * Sobrescribimos únicamente el código.
-                     *
-                     * Como int ocupa 4 bytes, solo cambiamos
-                     * los primeros 4 bytes del registro.
-                     */
+                    // BORRADO LÓGICO:
+                    // el registro no desaparece físicamente.
+                    // Su código pasa a -1 y después se ignora al leerlo.
+                    raf.seek(posicion);
                     raf.writeInt(-1);
-
-                    System.out.println(
-                            "Videojuego eliminado correctamente."
-                    );
-
+                    System.out.println("Videojuego eliminado.");
                 } else {
-
-                    System.out.println(
-                            "Operación cancelada."
-                    );
+                    System.out.println("Operación cancelada.");
                 }
             }
 
         } catch (NumberFormatException e) {
-
-            System.out.println(
-                    "Error: debes introducir un código numérico."
-            );
-
+            System.out.println("Código no válido.");
         } catch (IOException e) {
-
-            System.out.println(
-                    "Error al eliminar el videojuego: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al eliminar el videojuego.");
         }
     }
 
-    /*
-     * ============================================================
-     * MÉTODO AUXILIAR: ESCRIBIR UN REGISTRO
-     * ============================================================
-     *
-     * Centraliza la escritura de un videojuego completo.
-     *
-     * MUY IMPORTANTE:
-     *
-     * El orden de escritura debe ser siempre el mismo
-     * que utilizaremos después para leer.
-     */
     private static void escribirRegistro(
             RandomAccessFile raf,
             int codigo,
             String titulo,
             String plataforma,
-            short anio,
-            float precio,
-            boolean multijugador,
-            float valoracion) throws IOException {
+            int anio,
+            float precio) throws IOException {
 
-        // int ocupa 4 bytes.
         raf.writeInt(codigo);
-
-        // 35 caracteres x 2 bytes = 70 bytes.
-        escribirCadenaFija(
-                raf,
-                titulo,
-                LONGITUD_TITULO
-        );
-
-        // 15 caracteres x 2 bytes = 30 bytes.
-        escribirCadenaFija(
-                raf,
-                plataforma,
-                LONGITUD_PLATAFORMA
-        );
-
-        // short ocupa 2 bytes.
-        raf.writeShort(anio);
-
-        // float ocupa 4 bytes.
+        escribirCadena(raf, titulo, LONG_TITULO);
+        escribirCadena(raf, plataforma, LONG_PLATAFORMA);
+        raf.writeInt(anio);
         raf.writeFloat(precio);
-
-        // boolean ocupa 1 byte.
-        raf.writeBoolean(multijugador);
-
-        // float ocupa otros 4 bytes.
-        raf.writeFloat(valoracion);
     }
 
-    /*
-     * ============================================================
-     * MÉTODO AUXILIAR: ESCRIBIR CADENA FIJA
-     * ============================================================
-     *
-     * RandomAccessFile no sabe que queremos reservar siempre
-     * 35 caracteres para el título o 15 para la plataforma.
-     *
-     * Este método fuerza esa longitud.
-     */
-    private static void escribirCadenaFija(
+    private static void escribirCadena(
             RandomAccessFile raf,
             String texto,
             int longitud) throws IOException {
 
-        /*
-         * El operador ternario:
-         *
-         * texto != null ? texto : ""
-         *
-         * significa:
-         *
-         * si texto no es null -> utiliza texto
-         * si texto es null    -> utiliza cadena vacía
-         */
-        StringBuffer buffer =
-                new StringBuffer(
-                        texto != null ? texto : ""
-                );
+        for (int i = 0; i < longitud; i++) {
 
-        /*
-         * setLength fuerza la longitud.
-         *
-         * Si el texto es más largo, lo recorta.
-         * Si es más corto, lo completa.
-         */
-        buffer.setLength(longitud);
-
-        /*
-         * writeChars escribe cada carácter utilizando 2 bytes.
-         */
-        raf.writeChars(
-                buffer.toString()
-        );
+            if (i < texto.length()) {
+                raf.writeChar(texto.charAt(i));
+            } else {
+                raf.writeChar(' ');
+            }
+        }
     }
 
-    /*
-     * ============================================================
-     * MÉTODO AUXILIAR: LEER CADENA FIJA
-     * ============================================================
-     *
-     * Hace la operación contraria a escribirCadenaFija().
-     */
-    private static String leerCadenaFija(
+    private static String leerCadena(
             RandomAccessFile raf,
             int longitud) throws IOException {
 
-        // Creamos espacio para el número exacto de caracteres.
-        char[] caracteres =
-                new char[longitud];
+        String texto = "";
 
-        /*
-         * Leemos exactamente la misma cantidad de caracteres
-         * que escribimos anteriormente.
-         */
-        for (
-                int i = 0;
-                i < longitud;
-                i++
-        ) {
-
-            caracteres[i] =
-                    raf.readChar();
+        for (int i = 0; i < longitud; i++) {
+            texto += raf.readChar();
         }
 
-        /*
-         * Convertimos el array de char en String.
-         *
-         * trim() elimina el relleno sobrante de la cadena.
-         */
-        return new String(caracteres).trim();
+        return texto.trim();
     }
 
-    /*
-     * ============================================================
-     * MÉTODO AUXILIAR: MOSTRAR VIDEOJUEGO
-     * ============================================================
-     *
-     * Evita repetir el mismo código de impresión
-     * en todas las consultas.
-     */
-    private static void mostrarVideojuego(
+    private static void mostrarRegistro(
             int codigo,
             String titulo,
             String plataforma,
-            short anio,
-            float precio,
-            boolean multijugador,
-            float valoracion) {
+            int anio,
+            float precio) {
 
-        System.out.println();
-        System.out.println(
-                "----------------------------------------------"
-        );
-
-        System.out.println(
-                "Código       : " + codigo
-        );
-
-        System.out.println(
-                "Título       : " + titulo
-        );
-
-        System.out.println(
-                "Plataforma   : " + plataforma
-        );
-
-        System.out.println(
-                "Año          : " + anio
-        );
-
-        // %.2f muestra el float con dos decimales.
-        System.out.printf(
-                "Precio       : %.2f EUR%n",
-                precio
-        );
-
-        /*
-         * Operador ternario:
-         *
-         * condición ? valorSiTrue : valorSiFalse
-         */
-        System.out.println(
-                "Multijugador : "
-                        + (multijugador ? "Sí" : "No")
-        );
-
-        // %.1f muestra la valoración con un decimal.
-        System.out.printf(
-                "Valoración   : %.1f / 10%n",
-                valoracion
-        );
-
-        System.out.println(
-                "----------------------------------------------"
-        );
+        System.out.println("----------------------------");
+        System.out.println("Código: " + codigo);
+        System.out.println("Título: " + titulo);
+        System.out.println("Plataforma: " + plataforma);
+        System.out.println("Año: " + anio);
+        System.out.printf("Precio: %.2f €%n", precio);
     }
 }
